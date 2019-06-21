@@ -10,19 +10,23 @@
 	</parent>
 	<groupId>com.hybridit</groupId>
 	<artifactId>HybridLibrary</artifactId>
+
 	<version>0.0.1-SNAPSHOT</version>
 	<name>HybridLibrary</name>
 	<description>internship project</description>
 
 	<properties>
 		<java.version>12</java.version>
+		<h2database.version>1.4.199</h2database.version>
 	</properties>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -32,7 +36,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.199</version>
+			<version>${h2database.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -53,6 +57,15 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<configuration>
+					<mainClass>com.hybridit.HybridLibrary.HybridLibraryApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

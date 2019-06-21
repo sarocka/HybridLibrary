@@ -11,7 +11,7 @@ public class HybridLibraryApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(HybridLibraryApplication.class, args);
-		System.out.println("Sara");
+
 	}
 
 }

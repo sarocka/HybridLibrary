@@ -12,8 +12,8 @@ public class HybridLibraryApplication {
 
 	public static void main(String[] args) {
 
-		Logger logger = LoggerFactory.getLogger(HybridLibraryApplication.class);
-		logger.info("test");
+		/*Logger logger = LoggerFactory.getLogger(HybridLibraryApplication.class);
+		logger.info("test");*/
 		SpringApplication.run(HybridLibraryApplication.class, args);
 
 	}

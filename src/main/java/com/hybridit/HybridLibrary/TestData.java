@@ -18,7 +18,7 @@ public class TestData {
 
     @PostConstruct
     public void init() {
-        
+
         Book b1 = new Book("Lagum");
         Book b2 = new Book("Flaubert's parrot");
         bookService.save(b1);

@@ -32,9 +32,7 @@ public class JPABookService implements BookService {
         if (books == null || books.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No books to display");
         }
-
         return books;
-
     }
 
     @Override
@@ -59,6 +57,5 @@ public class JPABookService implements BookService {
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct book id");
         }
-
     }
 }

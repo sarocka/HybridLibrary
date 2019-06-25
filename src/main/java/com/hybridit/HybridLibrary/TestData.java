@@ -14,16 +14,11 @@ public class TestData {
     public TestData(BookService bookService) {
         this.bookService = bookService;
     }
-
-
     @PostConstruct
     public void init() {
-
         Book b1 = new Book("Lagum");
         Book b2 = new Book("Flaubert's parrot");
         bookService.save(b1);
         bookService.save(b2);
-
-
     }
 }

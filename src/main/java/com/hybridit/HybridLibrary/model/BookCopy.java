@@ -1,10 +1,14 @@
 package com.hybridit.HybridLibrary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+
 public class BookCopy {
 
     @Id
@@ -16,6 +20,7 @@ public class BookCopy {
     @Column
     private Date dateOfBorrowing;
     @ManyToOne(fetch = FetchType.EAGER)
+
     private Book book;
 
     public BookCopy(String libraryNum) {

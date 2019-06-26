@@ -1,6 +1,5 @@
 package com.hybridit.HybridLibrary;
 
-import com.hybridit.HybridLibrary.model.Author;
 import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.model.BookCopy;
 import com.hybridit.HybridLibrary.service.BookService;

@@ -2,7 +2,6 @@ package com.hybridit.HybridLibrary.controller;
 
 import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.service.BookService;
-import com.hybridit.HybridLibrary.service.JPABookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +30,7 @@ public class BookController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<Book> delete(@PathVariable Long id) {
-        return new ResponseEntity<>(bookService.delete(id), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(bookService.delete(id), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")

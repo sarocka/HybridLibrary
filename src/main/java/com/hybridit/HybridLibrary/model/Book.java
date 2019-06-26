@@ -1,5 +1,6 @@
 package com.hybridit.HybridLibrary.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class Book {
     @Id
     @GeneratedValue
@@ -22,6 +23,7 @@ public class Book {
     private String publisher;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
     private List<BookCopy> bookCopies;
 
     @ManyToMany(cascade = {
@@ -121,7 +123,6 @@ public class Book {
         Book book = (Book) o;
         return id.equals(book.id);
     }
-
 
     @Override
     public int hashCode() {

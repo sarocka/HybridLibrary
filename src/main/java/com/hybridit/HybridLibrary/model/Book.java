@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 
@@ -22,9 +19,9 @@ public class Book {
     @Column
     private String publisher;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 
-    private List<BookCopy> bookCopies;
+    private List<BookCopy> bookCopies = new ArrayList<>();
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,

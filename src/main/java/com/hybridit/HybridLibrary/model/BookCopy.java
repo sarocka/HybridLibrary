@@ -19,8 +19,8 @@ public class BookCopy {
     private String libraryNum;
     @Column
     private Date dateOfBorrowing;
-    @ManyToOne(fetch = FetchType.EAGER)
 
+    @ManyToOne(fetch = FetchType.EAGER)
     private Book book;
 
     public BookCopy(String libraryNum) {

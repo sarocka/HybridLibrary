@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
 @Service
 public class JPABookCopyService implements BookCopyService {
 
@@ -34,11 +35,13 @@ public class JPABookCopyService implements BookCopyService {
     @Override
     public BookCopy delete(Long id) {
         BookCopy bookCopy = bookCopyRepository.getOne(id);
-        if (bookCopy != null) {
-            bookCopyRepository.delete(bookCopy);
-            return bookCopy;
+        if (bookCopy == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The entity with a given id does not exist");
+        } else if (bookCopy.getDateOfBorrowing() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot delete rented book");
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The entity with a given id does not exist");
+        bookCopyRepository.delete(bookCopy);
+        return bookCopy;
     }
 
     @Override

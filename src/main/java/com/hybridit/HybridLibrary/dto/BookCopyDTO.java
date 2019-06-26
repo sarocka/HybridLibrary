@@ -1,11 +1,5 @@
 package com.hybridit.HybridLibrary.dto;
 
-import com.hybridit.HybridLibrary.model.Book;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class BookCopyDTO {

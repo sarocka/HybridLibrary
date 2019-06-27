@@ -23,9 +23,6 @@ public class TestData {
     public void init() {
         Book b1 = new Book("Lagum", "145-67-892-098-76", "Prosveta");
         Book b2 = new Book("Flaubert's parrot", "145-67-892-098-79", "Geopoetika");
-       /* b1.addAuthor(new Author("Svetlana Velmar Jankovic"));
-        b2.addAuthor(new Author("Julian Barnes"));*/
-//dodaj authorService.save
 
         BookCopy copy1 = new BookCopy("1s4df");
         BookCopy copy2 = new BookCopy("12rt3");

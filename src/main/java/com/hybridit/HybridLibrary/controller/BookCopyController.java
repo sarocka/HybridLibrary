@@ -22,8 +22,8 @@ public class BookCopyController {
     public BookCopyController(BookCopyService bookCopyService, BookCopyDTOToBookCopyConverter bookCopyDTOToBookCopyConverter,
                               BookCopyToBookCopyDTOConverter bookCopyToBookCopyDTOConverter) {
         this.bookCopyService = bookCopyService;
-        this.bookCopyDTOToBookCopyConverter= bookCopyDTOToBookCopyConverter;
-        this.bookCopyToBookCopyDTOConverter= bookCopyToBookCopyDTOConverter;
+        this.bookCopyDTOToBookCopyConverter = bookCopyDTOToBookCopyConverter;
+        this.bookCopyToBookCopyDTOConverter = bookCopyToBookCopyDTOConverter;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -43,13 +43,13 @@ public class BookCopyController {
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<BookCopyDTO> create(@RequestBody BookCopyDTO bookCopyDto) {
-        BookCopy bookCopy=bookCopyService.save(bookCopyDTOToBookCopyConverter.convert(bookCopyDto));
-        return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopy),HttpStatus.CREATED);
+        BookCopy bookCopy = bookCopyService.save(bookCopyDTOToBookCopyConverter.convert(bookCopyDto));
+        return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopy), HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<BookCopyDTO> update(@RequestBody BookCopyDTO bookCopyDTO, @PathVariable Long id) {
-        BookCopy bookCopyUpdated=bookCopyService.update(bookCopyDTOToBookCopyConverter.convert(bookCopyDTO),id);
+        BookCopy bookCopyUpdated = bookCopyService.update(bookCopyDTOToBookCopyConverter.convert(bookCopyDTO), id);
         return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopyUpdated), HttpStatus.OK);
     }
 

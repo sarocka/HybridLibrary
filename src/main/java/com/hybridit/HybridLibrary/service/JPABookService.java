@@ -28,8 +28,7 @@ public class JPABookService implements BookService {
     @Override
     public List<Book> findAll() {
         List<Book> books = bookRepository.findAll();
-        Optional<List<Book>> optionalBooks = Optional.ofNullable(books);
-        if (optionalBooks.isEmpty()){
+        if (books.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No books to display");
         }
         return books;
@@ -42,13 +41,12 @@ public class JPABookService implements BookService {
 
     @Override
     public Book delete(Long id) {
-        Book book = bookRepository.getOne(id);
-        Optional<Book> optionalBook=Optional.ofNullable(book);
-        if(optionalBook.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The entity with a given id does not exist");
-        }
-        bookRepository.delete(book);
-        return book;
+        return bookRepository.findById(id)
+                .map(book -> {
+                    bookRepository.delete(book);
+                    return book;
+                })
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"The entity ith a given id does not exist"));
     }
 
     @Override

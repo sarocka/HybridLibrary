@@ -19,7 +19,8 @@ public class JPABookCopyService implements BookCopyService {
 
     @Override
     public BookCopy findOne(Long id) {
-        return bookCopyRepository.getOne(id);
+        return bookCopyRepository.findById(id).
+                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "The entity with a given id does not exist"));
     }
 
     @Override

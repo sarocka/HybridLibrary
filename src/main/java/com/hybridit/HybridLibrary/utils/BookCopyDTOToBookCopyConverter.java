@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class BookCopyDTOToBookCopyConverter implements Converter<BookCopyDTO, BookCopy> {
@@ -29,12 +30,7 @@ public class BookCopyDTOToBookCopyConverter implements Converter<BookCopyDTO, Bo
     }
 
     public List<BookCopy> convert(List<BookCopyDTO> dtos) {
-        List<BookCopy> bookCopies = new ArrayList<>();
-
-        for (BookCopyDTO bookCopyDTO : dtos) {
-            bookCopies.add(convert(bookCopyDTO));
-        }
-        return bookCopies;
+       return dtos.stream().map(dto->convert(dto)).collect(Collectors.toList());
     }
 
 }

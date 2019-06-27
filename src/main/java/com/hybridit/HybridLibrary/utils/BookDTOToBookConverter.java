@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class BookDTOToBookConverter implements Converter<BookDTO, Book> {
     @Override
@@ -19,12 +21,7 @@ public class BookDTOToBookConverter implements Converter<BookDTO, Book> {
         return book;
     }
     public List<Book> convert(List<BookDTO> dtos){
-        List<Book> books = new ArrayList<>();
-
-        for(BookDTO bookDTO : dtos){
-            books.add(convert(bookDTO));
-        }
-        return books;
+        return dtos.stream().map(bookDTO -> convert(bookDTO)).collect(Collectors.toList());
     }
 
 }

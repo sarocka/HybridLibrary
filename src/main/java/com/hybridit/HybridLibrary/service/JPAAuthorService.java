@@ -46,8 +46,9 @@ public class JPAAuthorService implements AuthorService {
 
     @Override
     public Author update(Author author, Long id) {
-        if(authorRepository.existsById(id)){
-          return authorRepository.save(author);
+        if(authorRepository.existsById(author.getId())){
+          Author updated=authorRepository.save(author);
+          return updated;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with provided id does not exist");
     }

@@ -46,7 +46,7 @@ public class JPABookService implements BookService {
                     bookRepository.delete(book);
                     return book;
                 })
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"The entity ith a given id does not exist"));
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"The entity with a given id does not exist"));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class JPABookService implements BookService {
         if (bookRepository.existsById(id)) {
             return bookRepository.save(book);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct book id");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book with a provided id does not exist.");
         }
     }
 }

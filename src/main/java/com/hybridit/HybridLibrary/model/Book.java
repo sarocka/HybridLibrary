@@ -8,6 +8,7 @@ import java.util.*;
 public class Book {
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     private Long id;
     @Column
     private String title;

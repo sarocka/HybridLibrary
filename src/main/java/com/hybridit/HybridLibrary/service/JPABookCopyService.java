@@ -1,5 +1,6 @@
 package com.hybridit.HybridLibrary.service;
 
+import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.model.BookCopy;
 import com.hybridit.HybridLibrary.repository.BookCopyRepository;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,11 @@ public class JPABookCopyService implements BookCopyService {
 
     @Override
     public List<BookCopy> findAll() {
-        return bookCopyRepository.findAll();
+        List<BookCopy> bookCopies= bookCopyRepository.findAll();
+        if (bookCopies.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No book copies to display");
+        }
+        return bookCopies;
     }
 
     @Override

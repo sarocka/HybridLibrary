@@ -51,7 +51,7 @@ public class JPABookService implements BookService {
 
     @Override
     public Book update(Book book, Long id) {
-        if (id.equals(book.getId())) {
+        if (bookRepository.existsById(id)) {
             return bookRepository.save(book);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct book id");

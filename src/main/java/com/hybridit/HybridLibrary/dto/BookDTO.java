@@ -3,6 +3,7 @@ package com.hybridit.HybridLibrary.dto;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
+import java.util.Objects;
 
 
 public class BookDTO {
@@ -42,5 +43,18 @@ public class BookDTO {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookDTO bookDTO = (BookDTO) o;
+        return Objects.equals(id, bookDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

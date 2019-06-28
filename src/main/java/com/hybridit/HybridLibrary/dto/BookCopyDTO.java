@@ -1,6 +1,7 @@
 package com.hybridit.HybridLibrary.dto;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class BookCopyDTO {
 
@@ -48,5 +49,18 @@ public class BookCopyDTO {
 
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookCopyDTO that = (BookCopyDTO) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

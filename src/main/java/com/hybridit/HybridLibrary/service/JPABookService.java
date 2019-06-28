@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JPABookService implements BookService {
@@ -19,17 +21,14 @@ public class JPABookService implements BookService {
 
     @Override
     public Book findOne(Long id) {
-        Book book = bookRepository.getOne(id);
-        if (book == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Non-existant id");
-        }
-        return bookRepository.getOne(id);
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Non-existant id"));
     }
 
     @Override
     public List<Book> findAll() {
         List<Book> books = bookRepository.findAll();
-        if (books == null || books.isEmpty()) {
+        if (books.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No books to display");
         }
         return books;
@@ -42,20 +41,20 @@ public class JPABookService implements BookService {
 
     @Override
     public Book delete(Long id) {
-        Book book = bookRepository.getOne(id);
-        if (book != null) {
-            bookRepository.delete(book);
-            return book;
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The entity with a given id does not exist");
+        return bookRepository.findById(id)
+                .map(book -> {
+                    bookRepository.delete(book);
+                    return book;
+                })
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"The entity with a given id does not exist"));
     }
 
     @Override
     public Book update(Book book, Long id) {
-        if (id.equals(book.getId())) {
+        if (bookRepository.existsById(id)) {
             return bookRepository.save(book);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct book id");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book with a provided id does not exist.");
         }
     }
 }

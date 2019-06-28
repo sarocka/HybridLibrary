@@ -1,9 +1,9 @@
 package com.hybridit.HybridLibrary.service;
 
 import com.hybridit.HybridLibrary.model.Book;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookService {
 

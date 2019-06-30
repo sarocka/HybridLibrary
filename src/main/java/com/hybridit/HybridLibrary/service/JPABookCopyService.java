@@ -1,6 +1,5 @@
 package com.hybridit.HybridLibrary.service;
 
-import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.model.BookCopy;
 import com.hybridit.HybridLibrary.repository.BookCopyRepository;
 import org.springframework.http.HttpStatus;
@@ -51,7 +50,11 @@ public class JPABookCopyService implements BookCopyService {
     @Override
     public BookCopy update(BookCopy bookCopy, Long id) {
       if(bookCopyRepository.existsById(id)){
-       return bookCopyRepository.save(bookCopy);
+       BookCopy forUpdate = bookCopyRepository.getOne(id);
+       forUpdate.setLibraryNum(bookCopy.getLibraryNum());
+       forUpdate.setBook(bookCopy.getBook());
+    	  bookCopyRepository.save(forUpdate);
+    	  return forUpdate;
       }
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bookcopy with a given id does not exist!");
     }

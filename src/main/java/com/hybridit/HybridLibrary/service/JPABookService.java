@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class JPABookService implements BookService {
@@ -52,7 +51,12 @@ public class JPABookService implements BookService {
     @Override
     public Book update(Book book, Long id) {
         if (bookRepository.existsById(id)) {
-            return bookRepository.save(book);
+        	Book forUpdate= bookRepository.getOne(id);
+        	forUpdate.setIsbn(book.getIsbn());
+        	forUpdate.setPublisher(book.getPublisher());
+        	forUpdate.setTitle(book.getTitle());
+            bookRepository.save(forUpdate);
+            return forUpdate;
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book with a provided id does not exist.");
         }

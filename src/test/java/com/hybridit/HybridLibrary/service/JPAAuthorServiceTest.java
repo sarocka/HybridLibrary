@@ -79,30 +79,33 @@ public class JPAAuthorServiceTest {
         assertEquals(authorFromDb, authorDeleted);
     }
 
-    @Test (expected = ResponseStatusException.class)
+    @Test(expected = ResponseStatusException.class)
     public void delete_nonexistingIdProvided_exceptionThrown() {
 
         when(authorRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
         jpaAuthorService.delete(anyLong());
     }
+
     @Test
-    public void update_existingIdProvided_updatedAuthorReturned(){
-        Author authorForUpdate= new Author();
+    public void update_existingIdProvided_updatedAuthorReturned() {
+        Author fromRequestBody = new Author();
+        fromRequestBody.setId(1L);
 
-        when(authorRepositoryMock.existsById(anyLong())).thenReturn(true);
-        when(authorRepositoryMock.save(authorForUpdate)).thenReturn(authorForUpdate);
+        Author fromDb = new Author();
+        fromDb.setId(1L);
 
-       Author updatedAuthor= jpaAuthorService.update(authorForUpdate,1L);
+        when(authorRepositoryMock.findById(anyLong())).thenReturn(Optional.of(fromDb));
 
-       assertEquals(authorForUpdate,updatedAuthor);
+        Author updated = jpaAuthorService.update(fromRequestBody, anyLong());
+
+        assertEquals(fromRequestBody, updated);
     }
+
     @Test(expected = ResponseStatusException.class)
-    public void update_nonexistingIdProvided_exceptionThrown(){
+    public void update_nonexistingIdProvided_exceptionThrown() {
 
-        when(authorRepositoryMock.existsById(anyLong())).thenReturn(false);
-        jpaAuthorService.update(new Author(),1L);
-
-
+        when(authorRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
+        jpaAuthorService.update(new Author(), 1L);
     }
 
 }

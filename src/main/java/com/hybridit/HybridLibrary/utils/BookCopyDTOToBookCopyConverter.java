@@ -1,6 +1,7 @@
 package com.hybridit.HybridLibrary.utils;
 
 import com.hybridit.HybridLibrary.dto.BookCopyDTO;
+import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.model.BookCopy;
 import com.hybridit.HybridLibrary.service.BookService;
 import org.springframework.core.convert.converter.Converter;

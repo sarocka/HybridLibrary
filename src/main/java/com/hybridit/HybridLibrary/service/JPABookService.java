@@ -43,22 +43,20 @@ public class JPABookService implements BookService {
         return bookRepository.findById(id)
                 .map(book -> {
                     bookRepository.delete(book);
+                    book.removeBookFromAuthorsListOfBooks(book);
+                    book.removeCopies();
                     return book;
                 })
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"The entity with a given id does not exist"));
     }
-
     @Override
-    public Book update(Book book, Long id) {
-        if (bookRepository.existsById(id)) {
-        	Book forUpdate= bookRepository.getOne(id);
-        	forUpdate.setIsbn(book.getIsbn());
-        	forUpdate.setPublisher(book.getPublisher());
-        	forUpdate.setTitle(book.getTitle());
-            bookRepository.save(forUpdate);
-            return forUpdate;
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book with a provided id does not exist.");
-        }
+    public Book update(Book fromRequestBody, Long id) {
+        return bookRepository.findById(id).map(book -> {
+            book.setTitle(fromRequestBody.getTitle());
+            book.setPublisher(fromRequestBody.getPublisher());
+            book.setIsbn(fromRequestBody.getIsbn());
+            bookRepository.save(book);
+            return book;
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with provided id does not exist"));
     }
 }

@@ -1,5 +1,6 @@
 package com.hybridit.HybridLibrary.service;
 
+import com.hybridit.HybridLibrary.model.Author;
 import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.model.BookCopy;
 import com.hybridit.HybridLibrary.repository.BookCopyRepository;
@@ -97,19 +98,26 @@ public class JPABookCopyServiceTest {
 
     @Test
     public void update_existingBookCopy_updatedBookReturned() {
-        BookCopy copyForUpdate = new BookCopy();
-        copyForUpdate.setLibraryNum("134s");
+        Book book = new Book();
+        book.setId(1L);
+        BookCopy fromRequestBody = new BookCopy();
+        fromRequestBody.setId(1L);
+        fromRequestBody.setBook(book);
 
-        when(bookCopyRepositoryMock.existsById(anyLong())).thenReturn(true);
-        when(bookCopyRepositoryMock.save(copyForUpdate)).thenReturn(copyForUpdate);
+        BookCopy fromDb = new BookCopy();
+        fromDb.setId(1L);
+        fromDb.setBook(book);
 
-        BookCopy updatedCopy = jpaBookCopyService.update(copyForUpdate, 1L);
-        assertEquals(copyForUpdate.getLibraryNum(), updatedCopy.getLibraryNum());
+        when(bookCopyRepositoryMock.findById(anyLong())).thenReturn(Optional.of(fromDb));
+
+        BookCopy updated = jpaBookCopyService.update(fromRequestBody, anyLong());
+
+        assertEquals(fromRequestBody.getLibraryNum(), updated.getLibraryNum());
     }
 
     @Test(expected = ResponseStatusException.class)
     public void update_nonExistingBookCopy_exceptionThrown() {
-        when(bookCopyRepositoryMock.existsById(anyLong())).thenReturn(false);
+        when(bookCopyRepositoryMock.findById((anyLong()))).thenReturn(Optional.empty());
         jpaBookCopyService.update(new BookCopy(), 1L);
     }
 

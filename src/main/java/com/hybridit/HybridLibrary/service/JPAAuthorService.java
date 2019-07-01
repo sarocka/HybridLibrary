@@ -24,9 +24,9 @@ public class JPAAuthorService implements AuthorService {
 
     @Override
     public List<Author> findAll() {
-        List<Author>authors= authorRepository.findAll();
-        if(authors.isEmpty()){
-           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No authors to display");
+        List<Author> authors = authorRepository.findAll();
+        if (authors.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No authors to display");
         }
         return authors;
     }
@@ -38,20 +38,23 @@ public class JPAAuthorService implements AuthorService {
 
     @Override
     public Author delete(Long id) {
-        return authorRepository.findById(id).
-                map(author -> {authorRepository.delete(author);
-                    return author;})
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with provided id does not exist"));
+        if(!authorRepository.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with provided id does not exist");
+        } else if (!authorRepository.getOne(id).getBooks().isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot delete the author connected with books in database");
+        } else {
+            Author deleted= authorRepository.getOne(id);
+            authorRepository.deleteById(id);
+            return deleted;
+        }
     }
 
     @Override
-    public Author update(Author author, Long id) {
-        if(authorRepository.existsById(id)){
-      Author forUpdate= authorRepository.getOne(id);
-      forUpdate.setName(author.getName());
-      authorRepository.save(forUpdate);
-      return forUpdate;
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with provided id does not exist");
+    public Author update(Author fromRequestBody, Long id) {
+        return authorRepository.findById(id).map(author -> {
+            author.setName(fromRequestBody.getName());
+            authorRepository.save(author);
+            return author;
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with provided id does not exist"));
     }
 }

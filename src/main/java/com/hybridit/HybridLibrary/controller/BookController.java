@@ -42,12 +42,16 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<Book> create(@RequestBody BookDTO bookDTO) {
-        return new ResponseEntity<>(bookService.save(bookDTOToBookConverter.convert(bookDTO)), HttpStatus.CREATED);
+    public ResponseEntity<BookDTO> create(@RequestBody BookDTO bookDTO) {
+        Book book = bookDTOToBookConverter.convert(bookDTO);
+        bookService.save(book);
+        return new ResponseEntity<>(bookToBookDTOConverter.convert(book), HttpStatus.CREATED);
     }
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
-    public ResponseEntity<Book> update(@RequestBody BookDTO bookDTO, @PathVariable Long id) {
-        return new ResponseEntity<>(bookService.update(bookDTOToBookConverter.convert(bookDTO), id), HttpStatus.OK);
+    public ResponseEntity<BookDTO> update(@RequestBody BookDTO bookDTO, @PathVariable Long id) {
+        Book book = bookDTOToBookConverter.convert(bookDTO);
+        Book updated=bookService.update(book,id);
+        return new ResponseEntity<>(bookToBookDTOConverter.convert(updated), HttpStatus.OK);
     }
 
 

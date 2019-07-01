@@ -1,20 +1,25 @@
 package com.hybridit.HybridLibrary.service;
 
+import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.model.BookCopy;
 import com.hybridit.HybridLibrary.repository.BookCopyRepository;
+import com.hybridit.HybridLibrary.repository.BookRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class JPABookCopyService implements BookCopyService {
 
     public final BookCopyRepository bookCopyRepository;
+    public final BookRepository bookRepository;
 
-    public JPABookCopyService(BookCopyRepository bookCopyRepository) {
+    public JPABookCopyService(BookCopyRepository bookCopyRepository, BookRepository bookRepository) {
         this.bookCopyRepository = bookCopyRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Override
@@ -48,14 +53,13 @@ public class JPABookCopyService implements BookCopyService {
     }
 
     @Override
-    public BookCopy update(BookCopy bookCopy, Long id) {
-      if(bookCopyRepository.existsById(id)){
-       BookCopy forUpdate = bookCopyRepository.getOne(id);
-       forUpdate.setLibraryNum(bookCopy.getLibraryNum());
-       forUpdate.setBook(bookCopy.getBook());
-    	  bookCopyRepository.save(forUpdate);
-    	  return forUpdate;
-      }
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bookcopy with a given id does not exist!");
+    public BookCopy update(BookCopy fromRequestBody, Long id) {
+        return bookCopyRepository.findById(id).map(copy -> {
+            copy.setLibraryNum(fromRequestBody.getLibraryNum());
+            copy.setBook(fromRequestBody.getBook());
+            copy.setDateOfBorrowing(fromRequestBody.getDateOfBorrowing());
+            bookCopyRepository.save(copy);
+            return copy;
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book copy with provided id does not exist"));
     }
 }

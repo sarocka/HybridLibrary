@@ -16,7 +16,6 @@ public class AuthorToAuthorDTOConverter implements Converter<Author, AuthorDTO> 
         authorDTO.setName(author.getName());
         authorDTO.setId(author.getId());
         return authorDTO;
-
     }
     public List<AuthorDTO> convert(List<Author>authors){
         return authors.stream().map(author -> convert(author)).collect(Collectors.toList());

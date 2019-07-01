@@ -8,22 +8,23 @@ import java.util.*;
 public class Book {
     @Id
     @GeneratedValue
-    @Column(updatable = false)
+    @Column
     private Long id;
     @Column
     private String title;
-    @Column
+    @Column (unique = true)
     private String isbn;
     @Column
     private String publisher;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 
     private List<BookCopy> bookCopies = new ArrayList<>();
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
-            CascadeType.MERGE})
+            CascadeType.MERGE
+    })
     @JoinTable(
             name = "book_author",
             joinColumns = {@JoinColumn(name = "book_id")},
@@ -92,23 +93,19 @@ public class Book {
         this.bookCopies = bookCopies;
     }
 
-    public void addAuthor(Author author) {
-        authors.add(author);
-        author.getBooks().add(this);
+    public void removeCopies(){
+      List<BookCopy>booksCopies= this.getBookCopies();
+      for(BookCopy copy: booksCopies){
+          this.getBookCopies().remove(copy);
+      }
     }
 
-    public void removeAuthor(Author author) {
-        authors.remove(author);
-        author.getBooks().remove(this);
-    }
-
-    public void addCopy(BookCopy copy) {
-        if (copy.getBook() != this) {
-            copy.setBook(this);
+    public void removeBookFromAuthorsListOfBooks(Book book){
+        Set<Author> authorsOfTheBook = book.getAuthors();
+        for (Author author: authorsOfTheBook){
+            author.getBooks().remove(book);
         }
-        bookCopies.add(copy);
     }
-
 
     @Override
     public boolean equals(Object o) {

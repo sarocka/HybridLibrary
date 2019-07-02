@@ -1,6 +1,5 @@
 package com.hybridit.HybridLibrary.service;
 
-import com.hybridit.HybridLibrary.model.Author;
 import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.repository.BookRepository;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -58,7 +56,6 @@ public class JPABookServiceTest {
     @Test(expected = ResponseStatusException.class)
     public void findAll_booksNotExistingInDb_exceptionIsThrown() {
         when(bookRepositoryMock.findAll()).thenReturn(Collections.EMPTY_LIST);
-
         jpaBookService.findAll();
     }
 
@@ -78,7 +75,6 @@ public class JPABookServiceTest {
     @Test(expected = ResponseStatusException.class)
     public void delete_nonexistingBookInDb_throwsException() {
         when(bookRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
-
         jpaBookService.delete(1l);
     }
 

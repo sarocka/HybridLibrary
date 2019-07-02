@@ -1,26 +1,24 @@
 package com.hybridit.HybridLibrary.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-
 public class Book {
+
     @Id
-    @GeneratedValue
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String title;
-    @Column (unique = true)
+    @Column(unique = true)
     private String isbn;
     @Column
     private String publisher;
-
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-
+    @OneToMany(mappedBy = "book", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private List<BookCopy> bookCopies = new ArrayList<>();
-
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -41,10 +39,8 @@ public class Book {
         this.isbn = isbn;
         this.publisher = publisher;
     }
-
     public Book() {
     }
-
     public Long getId() {
         return id;
     }
@@ -93,20 +89,6 @@ public class Book {
         this.bookCopies = bookCopies;
     }
 
-    public void removeCopies(){
-      List<BookCopy>booksCopies= this.getBookCopies();
-      for(BookCopy copy: booksCopies){
-          this.getBookCopies().remove(copy);
-      }
-    }
-
-    public void removeBookFromAuthorsListOfBooks(Book book){
-        Set<Author> authorsOfTheBook = book.getAuthors();
-        for (Author author: authorsOfTheBook){
-            author.getBooks().remove(book);
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,7 +96,6 @@ public class Book {
         Book book = (Book) o;
         return id.equals(book.id);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id);

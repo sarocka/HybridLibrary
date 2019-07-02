@@ -1,25 +1,20 @@
 package com.hybridit.HybridLibrary.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-
 public class BookCopy {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     @NotNull
     private String libraryNum;
     @Column
     private Date dateOfBorrowing;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private Book book;
 
@@ -63,6 +58,6 @@ public class BookCopy {
         if (!book.getBookCopies().contains(this)) {
             book.getBookCopies().add(this);
         }
-
     }
+
 }

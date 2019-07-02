@@ -38,12 +38,12 @@ public class JPAAuthorService implements AuthorService {
 
     @Override
     public Author delete(Long id) {
-        if(!authorRepository.existsById(id)){
+        if (!authorRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with provided id does not exist");
-        } else if (!authorRepository.getOne(id).getBooks().isEmpty()){
+        } else if (!authorRepository.getOne(id).getBooks().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot delete the author connected with books in database");
         } else {
-            Author deleted= authorRepository.getOne(id);
+            Author deleted = authorRepository.getOne(id);
             authorRepository.deleteById(id);
             return deleted;
         }

@@ -55,7 +55,6 @@ public class AuthorController {
     public ResponseEntity<AuthorDTO> update(@RequestBody AuthorDTO authorDTO, @PathVariable Long id) {
         Author author = authorDTOToAuthorConverter.convert(authorDTO);
         Author updated=  authorService.update(author,id);
-
         return new ResponseEntity<>(authorToAuthorDTOConverter.convert(updated), HttpStatus.OK);
     }
 

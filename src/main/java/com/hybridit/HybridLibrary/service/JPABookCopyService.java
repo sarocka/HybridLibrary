@@ -40,12 +40,14 @@ public class JPABookCopyService implements BookCopyService {
 
     @Override
     public BookCopy delete(Long id) {
-        return bookCopyRepository.findById(id)
-                .map(bookCopy -> {
-                    bookCopyRepository.delete(bookCopy);
-                    return bookCopy;
-                })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The entity ith a given id does not exist"));
+        if (!bookCopyRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book copy with id provided does not exist");
+        } else if (bookCopyRepository.getOne(id).getDateOfBorrowing() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot delete rented copy");
+        }
+        BookCopy bookCopy = bookCopyRepository.getOne(id);
+        bookCopyRepository.delete(bookCopy);
+        return bookCopy;
     }
 
     @Override

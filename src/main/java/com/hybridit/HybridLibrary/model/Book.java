@@ -1,7 +1,5 @@
 package com.hybridit.HybridLibrary.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -39,8 +37,10 @@ public class Book {
         this.isbn = isbn;
         this.publisher = publisher;
     }
+
     public Book() {
     }
+
     public Long getId() {
         return id;
     }
@@ -96,8 +96,11 @@ public class Book {
         Book book = (Book) o;
         return id.equals(book.id);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
 }

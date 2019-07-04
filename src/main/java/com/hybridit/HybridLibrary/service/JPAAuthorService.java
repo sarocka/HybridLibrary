@@ -19,7 +19,10 @@ public class JPAAuthorService implements AuthorService {
 
     @Override
     public Author findOne(Long id) {
-        return authorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "the entity with a given id does not exist"));
+        if (!authorRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with id provided does not exist");
+        }
+        return authorRepository.getOne(id);
     }
 
     @Override

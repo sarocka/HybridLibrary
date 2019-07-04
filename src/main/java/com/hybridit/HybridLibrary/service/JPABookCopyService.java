@@ -20,8 +20,10 @@ public class JPABookCopyService implements BookCopyService {
 
     @Override
     public BookCopy findOne(Long id) {
-        return bookCopyRepository.findById(id).
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The entity with a given id does not exist"));
+        if (!bookCopyRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book copy with a given id does not exist");
+        }
+        return bookCopyRepository.getOne(id);
     }
 
     @Override
@@ -52,12 +54,14 @@ public class JPABookCopyService implements BookCopyService {
 
     @Override
     public BookCopy update(BookCopy fromRequestBody, Long id) {
-        return bookCopyRepository.findById(id).map(copy -> {
-            copy.setLibraryNum(fromRequestBody.getLibraryNum());
-            copy.setBook(fromRequestBody.getBook());
-            copy.setDateOfBorrowing(fromRequestBody.getDateOfBorrowing());
-            bookCopyRepository.save(copy);
-            return copy;
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book copy with provided id does not exist"));
+        if (!bookCopyRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book copy with id provided does not exist");
+        }
+        BookCopy copyFromDb = bookCopyRepository.getOne(id);
+        copyFromDb.setLibraryNum(fromRequestBody.getLibraryNum());
+        copyFromDb.setBook(fromRequestBody.getBook());
+        copyFromDb.setDateOfBorrowing(fromRequestBody.getDateOfBorrowing());
+        bookCopyRepository.save(copyFromDb);
+        return copyFromDb;
     }
 }

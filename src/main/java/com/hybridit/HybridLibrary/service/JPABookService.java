@@ -1,7 +1,6 @@
 package com.hybridit.HybridLibrary.service;
 
 import com.hybridit.HybridLibrary.model.Book;
-import com.hybridit.HybridLibrary.repository.BookCopyRepository;
 import com.hybridit.HybridLibrary.repository.BookRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,10 @@ public class JPABookService implements BookService {
 
     @Override
     public Book findOne(Long id) {
-        return bookRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Non-existant id"));
+        if (!bookRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with id provided does not exist");
+        }
+        return bookRepository.getOne(id);
     }
 
     @Override

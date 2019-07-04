@@ -49,8 +49,8 @@ public class BookCopyController {
 
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<BookCopyDTO> update(@RequestBody BookCopyDTO bookCopyDTO, @PathVariable Long id) {
-        BookCopy bookCopyUpdated = bookCopyService.update(bookCopyDTOToBookCopyConverter.convert(bookCopyDTO), id);
-        return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopyUpdated), HttpStatus.OK);
+        BookCopy bookCopy = bookCopyDTOToBookCopyConverter.convert(bookCopyDTO);
+        return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopyService.update(bookCopy, id)), HttpStatus.OK);
     }
 
 

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -57,7 +56,6 @@ public class JPABookServiceTest {
     @Test(expected = ResponseStatusException.class)
     public void findAll_booksNotExistingInDb_exceptionIsThrown() {
         when(bookRepositoryMock.findAll()).thenReturn(Collections.EMPTY_LIST);
-
         jpaBookService.findAll();
     }
 
@@ -77,27 +75,28 @@ public class JPABookServiceTest {
     @Test(expected = ResponseStatusException.class)
     public void delete_nonexistingBookInDb_throwsException() {
         when(bookRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
-
         jpaBookService.delete(1l);
     }
 
     @Test
     public void update_existingBookInDb_updatedBookReturned() {
-        Book bookForUpdate = new Book();
-        bookForUpdate.setTitle("updated title");
+        Book fromRequestBody = new Book();
+        fromRequestBody.setId(1L);
 
-        when(bookRepositoryMock.existsById(anyLong())).thenReturn(true);
-        when(bookRepositoryMock.save(bookForUpdate)).thenReturn(bookForUpdate);
+        Book fromDb = new Book();
+        fromDb.setId(1L);
 
-        Book updatedBook = jpaBookService.update(bookForUpdate, 1l);
+        when(bookRepositoryMock.findById(anyLong())).thenReturn(Optional.of(fromDb));
 
-        assertEquals(bookForUpdate.getTitle(), updatedBook.getTitle());
+        Book updated = jpaBookService.update(fromRequestBody, anyLong());
+
+        assertEquals(fromRequestBody, updated);
     }
 
     @Test(expected = ResponseStatusException.class)
     public void update_nonExistingBookInDb_exceptionThrown() {
 
-        when(bookRepositoryMock.existsById(anyLong())).thenReturn(false);
+        when(bookRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
         jpaBookService.update(new Book(), 1l);
     }
 

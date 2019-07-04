@@ -4,26 +4,23 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-
 public class Book {
+
     @Id
-    @GeneratedValue
-    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String title;
-    @Column
+    @Column(unique = true)
     private String isbn;
     @Column
     private String publisher;
-
     @OneToMany(mappedBy = "book", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-
     private List<BookCopy> bookCopies = new ArrayList<>();
-
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
-            CascadeType.MERGE})
+            CascadeType.MERGE
+    })
     @JoinTable(
             name = "book_author",
             joinColumns = {@JoinColumn(name = "book_id")},
@@ -92,24 +89,6 @@ public class Book {
         this.bookCopies = bookCopies;
     }
 
-    public void addAuthor(Author author) {
-        authors.add(author);
-        author.getBooks().add(this);
-    }
-
-    public void removeAuthor(Author author) {
-        authors.remove(author);
-        author.getBooks().remove(this);
-    }
-
-    public void addCopy(BookCopy copy) {
-        if (copy.getBook() != this) {
-            copy.setBook(this);
-        }
-        bookCopies.add(copy);
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,4 +101,6 @@ public class Book {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
 }

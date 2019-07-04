@@ -6,29 +6,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional
 public class JPABookService implements BookService {
 
     private final BookRepository bookRepository;
+    private final BookCopyService bookCopyService;
 
-    public JPABookService(BookRepository bookRepository) {
+    public JPABookService(BookRepository bookRepository, BookCopyService bookCopyService) {
         this.bookRepository = bookRepository;
+        this.bookCopyService = bookCopyService;
     }
 
     @Override
     public Book findOne(Long id) {
-        return bookRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Non-existant id"));
+        if (!bookRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with id provided does not exist");
+        }
+        return bookRepository.getOne(id);
     }
 
     @Override
     public List<Book> findAll() {
         List<Book> books = bookRepository.findAll();
-        if (books.isEmpty()){
+        if (books.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No books to display");
         }
         return books;
@@ -43,18 +47,22 @@ public class JPABookService implements BookService {
     public Book delete(Long id) {
         return bookRepository.findById(id)
                 .map(book -> {
+                    book.getAuthors().forEach(author -> author.removeBook(book));
+                    book.getBookCopies().forEach(bookCopy -> bookCopyService.delete(bookCopy.getId()));
                     bookRepository.delete(book);
                     return book;
                 })
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"The entity with a given id does not exist"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The entity with a given id does not exist"));
     }
 
     @Override
-    public Book update(Book book, Long id) {
-        if (bookRepository.existsById(id)) {
-            return bookRepository.save(book);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book with a provided id does not exist.");
-        }
+    public Book update(Book fromRequestBody, Long id) {
+        return bookRepository.findById(id).map(book -> {
+            book.setTitle(fromRequestBody.getTitle());
+            book.setPublisher(fromRequestBody.getPublisher());
+            book.setIsbn(fromRequestBody.getIsbn());
+            bookRepository.save(book);
+            return book;
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with provided id does not exist"));
     }
 }

@@ -9,7 +9,7 @@ import java.util.Set;
 public class Author {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String name;

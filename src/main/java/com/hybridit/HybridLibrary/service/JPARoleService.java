@@ -51,10 +51,10 @@ public class JPARoleService implements RoleService {
 
     @Override
     public Role update(Role fromRequestBody, Long id) {
-        return roleRepository.findById(id).map(author -> {
-            author.setName(fromRequestBody.getName());
-            roleRepository.save(author);
-            return author;
+        return roleRepository.findById(id).map(role -> {
+            role.setName(fromRequestBody.getName());
+            roleRepository.save(role);
+            return role;
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Role with provided id does not exist"));
     }
 }

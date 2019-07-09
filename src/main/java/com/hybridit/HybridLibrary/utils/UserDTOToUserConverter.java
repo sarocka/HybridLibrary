@@ -1,10 +1,7 @@
 package com.hybridit.HybridLibrary.utils;
 
-import com.hybridit.HybridLibrary.dto.BookCopyDTO;
 import com.hybridit.HybridLibrary.dto.UserDTO;
-import com.hybridit.HybridLibrary.model.BookCopy;
 import com.hybridit.HybridLibrary.model.User;
-import com.hybridit.HybridLibrary.service.BookService;
 import com.hybridit.HybridLibrary.service.RoleService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -34,7 +31,7 @@ public class UserDTOToUserConverter implements Converter<UserDTO, User> {
     }
 
     public List<User> convert(List<UserDTO> dtos) {
-       return dtos.stream().map(dto->convert(dto)).collect(Collectors.toList());
+        return dtos.stream().map(dto -> convert(dto)).collect(Collectors.toList());
     }
 
 }

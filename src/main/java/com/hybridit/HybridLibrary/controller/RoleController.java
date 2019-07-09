@@ -1,13 +1,8 @@
 package com.hybridit.HybridLibrary.controller;
 
-import com.hybridit.HybridLibrary.dto.BookDTO;
 import com.hybridit.HybridLibrary.dto.RoleDTO;
-import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.model.Role;
-import com.hybridit.HybridLibrary.service.BookService;
 import com.hybridit.HybridLibrary.service.RoleService;
-import com.hybridit.HybridLibrary.utils.BookDTOToBookConverter;
-import com.hybridit.HybridLibrary.utils.BookToBookDTOConverter;
 import com.hybridit.HybridLibrary.utils.RoleDTOToRoleConverter;
 import com.hybridit.HybridLibrary.utils.RoleToRoleDTOConverter;
 import org.springframework.http.HttpStatus;
@@ -28,7 +23,7 @@ public class RoleController {
                           RoleDTOToRoleConverter roleDTOToRoleConverter) {
         this.roleService = roleService;
         this.roleToRoleDTOConverter = roleToRoleDTOConverter;
-        this.roleDTOToRoleConverter =roleDTOToRoleConverter;
+        this.roleDTOToRoleConverter = roleDTOToRoleConverter;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -52,10 +47,11 @@ public class RoleController {
         roleService.save(role);
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(role), HttpStatus.CREATED);
     }
+
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<RoleDTO> update(@RequestBody RoleDTO roleDTO, @PathVariable Long id) {
         Role role = roleDTOToRoleConverter.convert(roleDTO);
-        Role updated= roleService.update(role,id);
+        Role updated = roleService.update(role, id);
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(updated), HttpStatus.OK);
     }
 }

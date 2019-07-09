@@ -1,8 +1,6 @@
 package com.hybridit.HybridLibrary.utils;
 
-import com.hybridit.HybridLibrary.dto.BookCopyDTO;
 import com.hybridit.HybridLibrary.dto.UserDTO;
-import com.hybridit.HybridLibrary.model.BookCopy;
 import com.hybridit.HybridLibrary.model.User;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -15,7 +13,7 @@ public class UserToUserDTOConverter implements Converter<User, UserDTO> {
 
     @Override
     public UserDTO convert(User user) {
-        UserDTO userDTO= new UserDTO();
+        UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setRoleId(user.getRole().getId());
         userDTO.setRoleName(user.getRole().getName());

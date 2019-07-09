@@ -12,3 +12,11 @@ Insert into author (id, name) values (2, 'Luiggi Pirandelo');
 Insert into book_author (book_id, author_id) values (1, 1);
 Insert into book_author (book_id, author_id) values (2, 2);
 
+Insert into role (id, name) values (1, 'USER');
+Insert into role (id, name) values (2, 'ADMIN');
+
+Insert into user (id, username, password, firstname, lastname, role_id) values (1, 'sara', 'petruska', 'Sara', 'Rat',1);
+Insert into user (id, username, password, firstname, lastname, role_id) values (2, 'vadadah', 'jeltilepo', 'Vladimir', 'Danilovic',1);
+
+
+

@@ -90,7 +90,7 @@ public class JPAAuthorServiceTest {
     public void update_existingIdProvided_updatedAuthorReturned() {
         Author fromRequestBody = new Author();
         fromRequestBody.setId(1L);
-
+        fromRequestBody.setName("Author");
         Author fromDb = new Author();
         fromDb.setId(1L);
 
@@ -98,7 +98,7 @@ public class JPAAuthorServiceTest {
 
         Author updated = jpaAuthorService.update(fromRequestBody, anyLong());
 
-        assertEquals(fromRequestBody, updated);
+        assertEquals(fromRequestBody.getName(), updated.getName());
     }
 
     @Test(expected = ResponseStatusException.class)

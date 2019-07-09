@@ -3,6 +3,7 @@ package com.hybridit.HybridLibrary.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class BookCopy {
@@ -59,5 +60,19 @@ public class BookCopy {
             book.getBookCopies().add(this);
         }
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookCopy bookCopy = (BookCopy) o;
+        return Objects.equals(id, bookCopy.id) &&
+                Objects.equals(libraryNum, bookCopy.libraryNum) &&
+                Objects.equals(dateOfBorrowing, bookCopy.dateOfBorrowing) &&
+                Objects.equals(book, bookCopy.book);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, libraryNum, dateOfBorrowing, book);
+    }
 }

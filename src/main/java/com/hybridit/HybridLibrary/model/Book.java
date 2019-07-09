@@ -94,13 +94,16 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return id.equals(book.id);
+        return Objects.equals(id, book.id) &&
+                Objects.equals(title, book.title) &&
+                Objects.equals(isbn, book.isbn) &&
+                Objects.equals(publisher, book.publisher) &&
+                Objects.equals(bookCopies, book.bookCopies) &&
+                Objects.equals(authors, book.authors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, title, isbn, publisher, bookCopies, authors);
     }
-
-
 }

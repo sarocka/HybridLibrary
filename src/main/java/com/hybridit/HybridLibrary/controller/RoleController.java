@@ -7,6 +7,7 @@ import com.hybridit.HybridLibrary.utils.RoleDTOToRoleConverter;
 import com.hybridit.HybridLibrary.utils.RoleToRoleDTOConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,21 +27,25 @@ public class RoleController {
         this.roleDTOToRoleConverter = roleDTOToRoleConverter;
     }
 
+    @Secured({"ADMIN"})
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<RoleDTO>> getAll() {
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(roleService.findAll()), HttpStatus.OK);
     }
 
+    @Secured({"ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<RoleDTO> getOne(@PathVariable Long id) {
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(roleService.findOne(id)), HttpStatus.OK);
     }
 
+    @Secured({"ADMIN"})
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<RoleDTO> delete(@PathVariable Long id) {
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(roleService.delete(id)), HttpStatus.OK);
     }
 
+    @Secured({"ADMIN"})
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<RoleDTO> create(@RequestBody RoleDTO roleDTO) {
         Role role = roleDTOToRoleConverter.convert(roleDTO);
@@ -48,6 +53,7 @@ public class RoleController {
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(role), HttpStatus.CREATED);
     }
 
+    @Secured({"ADMIN"})
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<RoleDTO> update(@RequestBody RoleDTO roleDTO, @PathVariable Long id) {
         Role role = roleDTOToRoleConverter.convert(roleDTO);

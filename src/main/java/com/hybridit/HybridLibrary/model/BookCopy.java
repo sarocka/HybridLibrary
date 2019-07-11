@@ -18,6 +18,8 @@ public class BookCopy {
     private Date dateOfBorrowing;
     @ManyToOne(fetch = FetchType.EAGER)
     private Book book;
+    @OneToOne (fetch=FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Customer customer;
 
     public BookCopy(String libraryNum) {
         this.libraryNum = libraryNum;

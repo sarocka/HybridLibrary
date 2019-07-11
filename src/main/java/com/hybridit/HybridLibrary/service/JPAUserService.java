@@ -3,6 +3,8 @@ package com.hybridit.HybridLibrary.service;
 import com.hybridit.HybridLibrary.model.User;
 import com.hybridit.HybridLibrary.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -12,9 +14,11 @@ import java.util.List;
 public class JPAUserService implements UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    public JPAUserService(UserRepository userRepository) {
+    public JPAUserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder=encoder;
     }
 
     @Override
@@ -60,5 +64,15 @@ public class JPAUserService implements UserService {
             userRepository.save(user);
             return user;
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with provided id does not exist"));
+    }
+
+    @Override
+    public User registerNewUser(User user) {
+        if(userRepository.findByUsername(user.getUsername())==null){
+            user.setPassword(encoder.encode(user.getPassword()));
+            return userRepository.save(user);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists");
+
     }
 }

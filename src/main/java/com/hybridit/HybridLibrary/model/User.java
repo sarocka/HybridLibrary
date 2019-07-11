@@ -17,6 +17,7 @@ public class User {
     private String firstname;
     @Column
     private String lastname;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
 

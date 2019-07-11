@@ -1,6 +1,5 @@
 package com.hybridit.HybridLibrary.service;
 
-import com.hybridit.HybridLibrary.model.Author;
 import com.hybridit.HybridLibrary.model.Customer;
 
 import java.util.List;

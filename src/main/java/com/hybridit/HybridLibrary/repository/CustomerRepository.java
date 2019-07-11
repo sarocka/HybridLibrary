@@ -1,6 +1,5 @@
 package com.hybridit.HybridLibrary.repository;
 
-import com.hybridit.HybridLibrary.model.Author;
 import com.hybridit.HybridLibrary.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,13 +1,10 @@
 package com.hybridit.HybridLibrary.utils;
 
 import com.hybridit.HybridLibrary.dto.BookCopyDTO;
-import com.hybridit.HybridLibrary.dto.BookDTO;
-import com.hybridit.HybridLibrary.model.Book;
 import com.hybridit.HybridLibrary.model.BookCopy;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +19,9 @@ public class BookCopyToBookCopyDTOConverter implements Converter<BookCopy, BookC
         bookCopyDTO.setBookId(bookCopy.getBook().getId());
         bookCopyDTO.setDateOfBorrowing(bookCopy.getDateOfBorrowing());
         bookCopyDTO.setLibraryNum(bookCopy.getLibraryNum());
+        if (bookCopy.getCustomer() != null) {
+            bookCopyDTO.setCustomerId(bookCopy.getCustomer().getId());
+        }
         return bookCopyDTO;
     }
 

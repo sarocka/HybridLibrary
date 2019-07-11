@@ -10,6 +10,7 @@ public class BookCopyDTO {
     private Date dateOfBorrowing;
     private Long bookId;
     private String bookTitle;
+    private Long customerId;
 
     public Long getId() {
         return id;
@@ -49,6 +50,14 @@ public class BookCopyDTO {
 
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     @Override

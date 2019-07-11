@@ -18,6 +18,8 @@ public class BookCopy {
     private Date dateOfBorrowing;
     @ManyToOne(fetch = FetchType.EAGER)
     private Book book;
+    @OneToOne (fetch=FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Customer customer;
 
     public BookCopy(String libraryNum) {
         this.libraryNum = libraryNum;
@@ -60,6 +62,15 @@ public class BookCopy {
             book.getBookCopies().add(this);
         }
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

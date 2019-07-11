@@ -60,6 +60,4 @@ public class BookController {
         Book updated = bookService.update(book, id);
         return new ResponseEntity<>(bookToBookDTOConverter.convert(updated), HttpStatus.OK);
     }
-
-
 }

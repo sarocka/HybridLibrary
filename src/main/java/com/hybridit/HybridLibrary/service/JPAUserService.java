@@ -14,9 +14,9 @@ import java.util.List;
 public class JPAUserService implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
 
-    public JPAUserService(UserRepository userRepository, PasswordEncoder encoder) {
+    public JPAUserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.encoder=encoder;
     }

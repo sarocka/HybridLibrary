@@ -62,6 +62,15 @@ public class BookCopy {
             book.getBookCopies().add(this);
         }
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

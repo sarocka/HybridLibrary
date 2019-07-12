@@ -6,6 +6,7 @@ import com.hybridit.HybridLibrary.model.Customer;
 import com.hybridit.HybridLibrary.repository.BookCopyRepository;
 import com.hybridit.HybridLibrary.repository.BookRepository;
 import com.hybridit.HybridLibrary.repository.CustomerRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -13,10 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -26,7 +25,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class JPABookCopyServiceTest {
 
-    @InjectMocks
     private JPABookCopyService jpaBookCopyService;
 
     @Mock
@@ -37,6 +35,11 @@ public class JPABookCopyServiceTest {
 
     @Mock
     private CustomerRepository customerRepositoryMock;
+
+    @Before
+    public void setUp() {
+        jpaBookCopyService = new JPABookCopyService(bookCopyRepositoryMock, bookRepositoryMock, customerRepositoryMock, 20);
+    }
 
     @Test
     public void findOne_existingBookCopyIdIsProvided_bookCopyFoundInDb() {
@@ -170,7 +173,6 @@ public class JPABookCopyServiceTest {
         BookCopy availableForRent = new BookCopy();
         availableForRent.setLibraryNum("libraryNum");
 
-
         when(customerRepositoryMock.findByMembershipNo("membershipNo")).thenReturn(customerFromDb);
         when(bookCopyRepositoryMock.findByLibraryNum("libraryNum")).thenReturn(availableForRent);
 
@@ -189,6 +191,35 @@ public class JPABookCopyServiceTest {
         when(bookCopyRepositoryMock.findByLibraryNum("123")).thenReturn(null);
         jpaBookCopyService.rentByBookTitle("title", "123");
     }
+    @Test
+    public void getOverDueCopies_rentedCopiesAvailable_ListOfOverdueCopiesReturned(){
+        List<BookCopy> rentedCopies=new ArrayList<>();
+        BookCopy copy1= new BookCopy();
+        copy1.setDateOfBorrowing(LocalDate.now().minusDays(10));
+        rentedCopies.add(copy1);
+
+        BookCopy copy2= new BookCopy();
+        copy2.setDateOfBorrowing(LocalDate.now().minusDays(25));
+        rentedCopies.add(copy2);
+
+        BookCopy copy3= new BookCopy();
+
+        copy3.setDateOfBorrowing(LocalDate.now().minusDays(5));
+        rentedCopies.add(copy3);
+
+        when(bookCopyRepositoryMock.findByDateOfBorrowingNotNull()).thenReturn(rentedCopies);
+
+        List<BookCopy>overdueCopies= jpaBookCopyService.getOverdueCopies();
+
+        assertEquals(1,overdueCopies.size());
+    }
+    @Test(expected=ResponseStatusException.class)
+    public void getOverdueCopies_noRentedCopies_exceptionThrown(){
+        when(bookCopyRepositoryMock.findByDateOfBorrowingNotNull()).thenReturn(Collections.EMPTY_LIST);
+        jpaBookCopyService.getOverdueCopies();
+    }
+
+
 
 
 

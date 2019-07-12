@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,14 +22,15 @@ public class JPABookCopyService implements BookCopyService {
     public final BookCopyRepository bookCopyRepository;
     public final BookRepository bookRepository;
     private final CustomerRepository customerRepository;
-    @Value("${maximumDaysForKeepingRentedBooks}")
-    private int maximumDaysForKeepingRentedBooks;
+    private final int maximumDaysForKeepingRentedBooks;
 
 
-    public JPABookCopyService(BookCopyRepository bookCopyRepository, BookRepository bookRepository, CustomerRepository customerRepository) {
+    public JPABookCopyService(BookCopyRepository bookCopyRepository, BookRepository bookRepository, CustomerRepository customerRepository,
+                              @Value("${maximumDaysForKeepingRentedBooks}") int maximumDaysForKeepingRentedBooks) {
         this.bookCopyRepository = bookCopyRepository;
         this.bookRepository = bookRepository;
         this.customerRepository = customerRepository;
+        this.maximumDaysForKeepingRentedBooks = maximumDaysForKeepingRentedBooks;
     }
 
     @Override
@@ -93,7 +95,7 @@ public class JPABookCopyService implements BookCopyService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No available copies to rent");
         }
         rented.setCustomer(customer);
-        rented.setDateOfBorrowing(new Date());
+        rented.setDateOfBorrowing(LocalDate.now());
         bookCopyRepository.save(rented);
         return rented;
     }
@@ -124,7 +126,7 @@ public class JPABookCopyService implements BookCopyService {
         if (rented == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Copy with a given libraryNum does not exist.");
         }
-        rented.setDateOfBorrowing(new Date());
+        rented.setDateOfBorrowing(LocalDate.now());
         rented.setCustomer(customer);
         bookCopyRepository.save(rented);
         return rented;
@@ -137,7 +139,7 @@ public class JPABookCopyService implements BookCopyService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No rented copies");
         }
         for (BookCopy copy : rentedCopies) {
-            if (getDifferenceInDays(copy.getDateOfBorrowing()) >= maximumDaysForKeepingRentedBooks) {
+            if (isOverdue(copy.getDateOfBorrowing())) {
                 overdueCopies.add(copy);
             }
         }
@@ -147,11 +149,8 @@ public class JPABookCopyService implements BookCopyService {
         return overdueCopies;
     }
 
-    public int getDifferenceInDays(Date dateOfBorrowing) {
-        Date currentDate = new Date();
-        long currentLong = currentDate.getTime();
-        long dateOfBorrowingLong = dateOfBorrowing.getTime();
-        long diffLong = currentLong - dateOfBorrowingLong;
-        return (int) (diffLong / (1000 * 60 * 60 * 24));
+
+    private boolean isOverdue(LocalDate dateOfBorrowing) {
+        return dateOfBorrowing.isBefore(LocalDate.now().minusDays(maximumDaysForKeepingRentedBooks));
     }
 }

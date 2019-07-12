@@ -9,4 +9,6 @@ import javax.persistence.ElementCollection;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
+    Book findByTitle(String title);
+
 }

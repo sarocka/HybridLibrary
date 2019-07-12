@@ -27,7 +27,7 @@ public class BookCopyController {
         this.bookCopyToBookCopyDTOConverter = bookCopyToBookCopyDTOConverter;
     }
 
-    @Secured({"LIBRARIAN"})
+    //@Secured({"LIBRARIAN"})
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<BookCopyDTO>> getAll() {
         return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopyService.findAll()), HttpStatus.OK);

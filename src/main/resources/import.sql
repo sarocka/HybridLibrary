@@ -20,7 +20,7 @@ Insert into user (id, username, password, firstname, lastname, role_id) values (
 Insert into user (id, username, password, firstname, lastname, role_id) values (2, 'aron', 'aron', 'Aron', 'Sreder',2);
 Insert into user (id, username, password, firstname, lastname, role_id) values (3, 'ivan', 'ivan', 'Ivan', 'Gligoric',3);
 
-Insert into customer (id, firstname, lastname, address, phone_no) values (1, 'Vladimir', 'Danilovic', 'Cirpanova 1a', '063510250');
+Insert into customer (id, firstname, lastname, address, phone_no, membership_no) values (1, 'Vladimir', 'Danilovic', 'Cirpanova 1a', '063510250', '123456');
 
 
 

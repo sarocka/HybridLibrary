@@ -30,8 +30,6 @@ public class RentBookByLibraryNumController {
         BookCopy rented = bookCopyService.rentByLibraryNum(libraryNum, membershipNo);
         return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(rented), HttpStatus.OK);
     }
-
-
 }
 
 

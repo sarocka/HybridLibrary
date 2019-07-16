@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(value="/api/return")
+@RequestMapping(value = "/api/return")
 public class ReturnBookController {
 
     private final BookCopyService bookCopyService;
@@ -23,14 +21,13 @@ public class ReturnBookController {
 
     public ReturnBookController(BookCopyService bookCopyService, BookCopyToBookCopyDTOConverter bookCopyToBookCopyDTOConverter) {
         this.bookCopyService = bookCopyService;
-        this.bookCopyToBookCopyDTOConverter=bookCopyToBookCopyDTOConverter;
+        this.bookCopyToBookCopyDTOConverter = bookCopyToBookCopyDTOConverter;
     }
+
     @Secured({"LIBRARIAN", "MANAGER"})
-    @RequestMapping(method= RequestMethod.GET)
-    ResponseEntity<BookCopyDTO> returnCopy(@RequestParam String libraryNum){
-        BookCopy returned= bookCopyService.returnCopy(libraryNum);
+    @RequestMapping(method = RequestMethod.GET)
+    ResponseEntity<BookCopyDTO> returnCopy(@RequestParam String libraryNum) {
+        BookCopy returned = bookCopyService.returnCopy(libraryNum);
         return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(returned), HttpStatus.OK);
     }
-
-
 }

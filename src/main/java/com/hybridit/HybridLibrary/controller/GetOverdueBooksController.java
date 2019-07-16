@@ -9,13 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/api/overdueBooks")
+@RequestMapping(value = "/api/overdueBooks")
 public class GetOverdueBooksController {
 
     private final BookCopyService bookCopyService;
@@ -23,13 +22,13 @@ public class GetOverdueBooksController {
 
     public GetOverdueBooksController(BookCopyService bookCopyService, BookCopyToBookCopyDTOConverter bookCopyToBookCopyDTOConverter) {
         this.bookCopyService = bookCopyService;
-        this.bookCopyToBookCopyDTOConverter=bookCopyToBookCopyDTOConverter;
+        this.bookCopyToBookCopyDTOConverter = bookCopyToBookCopyDTOConverter;
     }
 
     @Secured({"LIBRARIAN", "MANAGER"})
-    @RequestMapping(method= RequestMethod.GET)
-    ResponseEntity<List<BookCopyDTO>> getOverdueBooks(){
-        List<BookCopy> overdueBooks=bookCopyService.getOverdueCopies();
+    @RequestMapping(method = RequestMethod.GET)
+    ResponseEntity<List<BookCopyDTO>> getOverdueBooks() {
+        List<BookCopy> overdueBooks = bookCopyService.getOverdueCopies();
         return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(overdueBooks), HttpStatus.OK);
     }
 }

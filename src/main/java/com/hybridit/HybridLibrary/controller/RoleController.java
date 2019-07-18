@@ -27,25 +27,25 @@ public class RoleController {
         this.roleDTOToRoleConverter = roleDTOToRoleConverter;
     }
 
-    @Secured({"ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<RoleDTO>> getAll() {
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(roleService.findAll()), HttpStatus.OK);
     }
 
-    @Secured({"ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<RoleDTO> getOne(@PathVariable Long id) {
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(roleService.findOne(id)), HttpStatus.OK);
     }
 
-    @Secured({"ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<RoleDTO> delete(@PathVariable Long id) {
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(roleService.delete(id)), HttpStatus.OK);
     }
 
-    @Secured({"ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<RoleDTO> create(@RequestBody RoleDTO roleDTO) {
         Role role = roleDTOToRoleConverter.convert(roleDTO);
@@ -53,7 +53,7 @@ public class RoleController {
         return new ResponseEntity<>(roleToRoleDTOConverter.convert(role), HttpStatus.CREATED);
     }
 
-    @Secured({"ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<RoleDTO> update(@RequestBody RoleDTO roleDTO, @PathVariable Long id) {
         Role role = roleDTOToRoleConverter.convert(roleDTO);

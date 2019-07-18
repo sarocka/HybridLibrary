@@ -19,31 +19,31 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @Secured({"MANAGER", "LIBRARIAN"})
+    @Secured({"ROLE_MANAGER", "ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Customer>> getAll() {
         return new ResponseEntity<>(customerService.findAll(), HttpStatus.OK);
     }
 
-    @Secured({"MANAGER", "LIBRARIAN"})
+    @Secured({"ROLE_MANAGER", "ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Customer> getOne(@PathVariable Long id) {
         return new ResponseEntity<>(customerService.findOne(id), HttpStatus.OK);
     }
 
-    @Secured({"MANAGER", "LIBRARIAN"})
+    @Secured({"ROLE_MANAGER", "ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<Customer> delete(@PathVariable Long id) {
         return new ResponseEntity<>(customerService.delete(id), HttpStatus.OK);
     }
 
-    @Secured({"MANAGER", "LIBRARIAN"})
+    @Secured({"ROLE_MANAGER", "ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Customer> create(@RequestBody Customer customer) {
         return new ResponseEntity<>(customerService.save(customer), HttpStatus.CREATED);
     }
 
-    @Secured({"MANAGER", "LIBRARIAN"})
+    @Secured({"ROLE_MANAGER", "ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<Customer> update(@RequestBody Customer customer, @PathVariable Long id) {
         return new ResponseEntity<>(customerService.update(customer, id), HttpStatus.OK);

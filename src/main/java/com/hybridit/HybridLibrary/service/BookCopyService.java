@@ -15,4 +15,12 @@ public interface BookCopyService {
     BookCopy delete(Long id);
 
     BookCopy update(BookCopy bookCopy, Long id);
+
+    BookCopy rentByBookTitle(String title, String membershipNo);
+
+    BookCopy rentByLibraryNum(String libraryNum, String membershipNo);
+
+    BookCopy returnCopy(String libraryNum);
+
+    List<BookCopy>getOverdueCopies();
 }

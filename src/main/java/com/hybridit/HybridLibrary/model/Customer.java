@@ -19,6 +19,8 @@ public class Customer {
     private String address;
     @Column
     private String phoneNo;
+    @Column(unique = true)
+    private String membershipNo;
 
     public Long getId() {
         return id;
@@ -58,5 +60,13 @@ public class Customer {
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
+    }
+
+    public String getMembershipNo() {
+        return membershipNo;
+    }
+
+    public void setMembershipNo(String membershipNo) {
+        this.membershipNo = membershipNo;
     }
 }

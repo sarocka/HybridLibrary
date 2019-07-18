@@ -1,5 +1,6 @@
 package com.hybridit.HybridLibrary.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -7,7 +8,7 @@ public class BookCopyDTO {
 
     private Long id;
     private String libraryNum;
-    private Date dateOfBorrowing;
+    private LocalDate dateOfBorrowing;
     private Long bookId;
     private String bookTitle;
     private Long customerId;
@@ -28,11 +29,11 @@ public class BookCopyDTO {
         this.libraryNum = libraryNum;
     }
 
-    public Date getDateOfBorrowing() {
+    public LocalDate getDateOfBorrowing() {
         return dateOfBorrowing;
     }
 
-    public void setDateOfBorrowing(Date dateOfBorrowing) {
+    public void setDateOfBorrowing(LocalDate dateOfBorrowing) {
         this.dateOfBorrowing = dateOfBorrowing;
     }
 

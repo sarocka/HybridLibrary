@@ -14,11 +14,9 @@ import java.util.List;
 public class JPAUserService implements UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder;
 
-    public JPAUserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
+    public JPAUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.encoder=encoder;
     }
 
     @Override
@@ -69,10 +67,15 @@ public class JPAUserService implements UserService {
     @Override
     public User registerNewUser(User user) {
         if(userRepository.findByUsername(user.getUsername())==null){
-            user.setPassword(encoder.encode(user.getPassword()));
+            user.setPassword(user.getPassword());
             return userRepository.save(user);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists");
 
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

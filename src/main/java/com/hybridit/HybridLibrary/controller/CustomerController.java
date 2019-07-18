@@ -31,19 +31,19 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.findOne(id), HttpStatus.OK);
     }
 
-    @Secured({"MANAGER", "LIBRARIAN"})
+   // @Secured({"MANAGER", "LIBRARIAN"})
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<Customer> delete(@PathVariable Long id) {
         return new ResponseEntity<>(customerService.delete(id), HttpStatus.OK);
     }
 
-    @Secured({"MANAGER", "LIBRARIAN"})
+   // @Secured({"MANAGER", "LIBRARIAN"})
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Customer> create(@RequestBody Customer customer) {
         return new ResponseEntity<>(customerService.save(customer), HttpStatus.CREATED);
     }
 
-    @Secured({"MANAGER", "LIBRARIAN"})
+   // @Secured({"MANAGER", "LIBRARIAN"})
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<Customer> update(@RequestBody Customer customer, @PathVariable Long id) {
         return new ResponseEntity<>(customerService.update(customer, id), HttpStatus.OK);

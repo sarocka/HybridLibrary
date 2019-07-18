@@ -48,7 +48,8 @@ public class JPABookService implements BookService {
         return bookRepository.findById(id)
                 .map(book -> {
                     book.getAuthors().forEach(author -> author.removeBook(book));
-                    book.getBookCopies().forEach(bookCopy -> bookCopyService.delete(bookCopy.getId()));
+                    book.getBookCopies().
+                            forEach(bookCopy -> bookCopyService.delete(bookCopy.getId()));
                     bookRepository.delete(book);
                     return book;
                 })

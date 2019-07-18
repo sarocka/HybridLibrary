@@ -89,6 +89,7 @@ public class Book {
         this.bookCopies = bookCopies;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,8 +103,4 @@ public class Book {
                 Objects.equals(authors, book.authors);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, isbn, publisher, bookCopies, authors);
-    }
 }

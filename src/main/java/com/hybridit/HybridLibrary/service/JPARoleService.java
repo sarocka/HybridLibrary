@@ -2,6 +2,7 @@ package com.hybridit.HybridLibrary.service;
 
 import com.hybridit.HybridLibrary.model.Role;
 import com.hybridit.HybridLibrary.repository.RoleRepository;
+import com.hybridit.HybridLibrary.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,9 +13,11 @@ import java.util.List;
 public class JPARoleService implements RoleService {
 
     private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
-    public JPARoleService(RoleRepository roleRepository) {
+    public JPARoleService(RoleRepository roleRepository, UserRepository userRepository) {
         this.roleRepository = roleRepository;
+        this.userRepository= userRepository;
     }
 
     @Override
@@ -45,6 +48,7 @@ public class JPARoleService implements RoleService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role with provided id does not exist");
         }
         Role deleted = roleRepository.getOne(id);
+        roleRepository.getOne(id).getUsers().stream().forEach(user -> userRepository.delete(user));
         roleRepository.deleteById(id);
         return deleted;
     }

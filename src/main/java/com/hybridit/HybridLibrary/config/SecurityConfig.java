@@ -1,5 +1,6 @@
 package com.hybridit.HybridLibrary.config;
 
+import com.hybridit.HybridLibrary.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,9 +19,9 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
         securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -33,14 +34,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/h2_console/**").permitAll();
+                .anyRequest().authenticated();
 
         http.csrf().disable();
         http.headers().frameOptions().disable();

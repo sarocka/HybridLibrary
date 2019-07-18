@@ -44,7 +44,7 @@ public class JPAAuthorService implements AuthorService {
         if (!authorRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with provided id does not exist");
         } else if (!authorRepository.getOne(id).getBooks().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot delete the author connected with books in database");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot delete the author connected with books in database");
         } else {
             Author deleted = authorRepository.getOne(id);
             authorRepository.deleteById(id);

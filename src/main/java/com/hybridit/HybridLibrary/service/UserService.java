@@ -12,5 +12,6 @@ public interface UserService {
     User delete(Long id);
     User update(User user, Long id);
     User registerNewUser(User user);
+    User findByUsername(String username);
 
 }

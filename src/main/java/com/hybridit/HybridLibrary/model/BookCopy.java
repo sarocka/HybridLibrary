@@ -2,6 +2,7 @@ package com.hybridit.HybridLibrary.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ public class BookCopy {
     @NotNull
     private String libraryNum;
     @Column
-    private Date dateOfBorrowing;
+    private LocalDate dateOfBorrowing;
     @ManyToOne(fetch = FetchType.EAGER)
     private Book book;
     @OneToOne (fetch=FetchType.EAGER, cascade = CascadeType.MERGE)
@@ -44,11 +45,11 @@ public class BookCopy {
         this.libraryNum = libraryNum;
     }
 
-    public Date getDateOfBorrowing() {
+    public LocalDate getDateOfBorrowing() {
         return dateOfBorrowing;
     }
 
-    public void setDateOfBorrowing(Date dateOfBorrowing) {
+    public void setDateOfBorrowing(LocalDate dateOfBorrowing) {
         this.dateOfBorrowing = dateOfBorrowing;
     }
 

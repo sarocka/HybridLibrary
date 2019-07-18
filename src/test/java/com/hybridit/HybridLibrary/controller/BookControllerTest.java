@@ -105,7 +105,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void deleteExistingBook() {
+    public void deleteExistingBookWithNoRentedCopies() {
         given().auth()
                 .basic("ivan", "ivan").
                 when().delete("/api/books/{id}", 1).then().
@@ -113,6 +113,12 @@ public class BookControllerTest {
                 body("publisher", Matchers.equalTo("Jonathan Cape")).
                 body("title", Matchers.equalTo("Flauberts Parrot")).
                 body("isbn", Matchers.equalTo("4567-897-98"));
+    }
+    @Test
+    public void deleteExistingBookWithRentedCopies() {
+        given().auth()
+                .basic("ivan", "ivan").
+                when().delete("/api/books/{id}", 2).then().statusCode(400);
     }
 
     @Test

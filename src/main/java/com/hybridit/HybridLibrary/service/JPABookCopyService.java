@@ -43,7 +43,7 @@ public class JPABookCopyService implements BookCopyService {
 
     @Override
     public List<BookCopy> findAll() {
-        List<BookCopy> bookCopies = bookCopyRepository.findAll();
+       List<BookCopy> bookCopies = bookCopyRepository.findAll();
         if (bookCopies.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No book copies to display");
         }
@@ -148,7 +148,6 @@ public class JPABookCopyService implements BookCopyService {
         }
         return overdueCopies;
     }
-
 
     private boolean isOverdue(LocalDate dateOfBorrowing) {
         return dateOfBorrowing.isBefore(LocalDate.now().minusDays(maximumDaysForKeepingRentedBooks));

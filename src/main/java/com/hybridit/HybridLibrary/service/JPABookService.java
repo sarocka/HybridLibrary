@@ -1,6 +1,8 @@
 package com.hybridit.HybridLibrary.service;
 
 import com.hybridit.HybridLibrary.model.Book;
+import com.hybridit.HybridLibrary.model.BookCopy;
+import com.hybridit.HybridLibrary.repository.BookCopyRepository;
 import com.hybridit.HybridLibrary.repository.BookRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,13 @@ public class JPABookService implements BookService {
 
     private final BookRepository bookRepository;
     private final BookCopyService bookCopyService;
+    private final BookCopyRepository bookCopyRepository;
 
-    public JPABookService(BookRepository bookRepository, BookCopyService bookCopyService) {
+
+    public JPABookService(BookRepository bookRepository, BookCopyService bookCopyService, BookCopyRepository bookCopyRepository) {
         this.bookRepository = bookRepository;
         this.bookCopyService = bookCopyService;
+        this.bookCopyRepository = bookCopyRepository;
     }
 
     @Override
@@ -45,15 +50,20 @@ public class JPABookService implements BookService {
 
     @Override
     public Book delete(Long id) {
-        return bookRepository.findById(id)
-                .map(book -> {
-                    book.getAuthors().forEach(author -> author.removeBook(book));
-                    book.getBookCopies().
-                            forEach(bookCopy -> bookCopyService.delete(bookCopy.getId()));
-                    bookRepository.delete(book);
-                    return book;
-                })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The entity with a given id does not exist"));
+        if (!bookRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with provided id does not exist");
+        }
+        Book book = bookRepository.getOne(id);
+        if (!findRentedCopies(book.getId()).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot delete book with rented copies");
+        }
+        book.getAuthors().forEach(author -> author.removeBook(book));
+        book.getBookCopies().forEach(bookCopy -> bookCopyRepository.delete(bookCopy));
+        return book;
+    }
+
+    public List<BookCopy> findRentedCopies(Long id) {
+        return bookCopyRepository.findByBookIdAndDateOfBorrowingNotNull(id);
     }
 
     @Override

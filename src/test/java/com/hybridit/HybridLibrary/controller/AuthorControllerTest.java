@@ -1,7 +1,6 @@
 package com.hybridit.HybridLibrary.controller;
 
 import com.hybridit.HybridLibrary.dto.AuthorDTO;
-import com.hybridit.HybridLibrary.model.Author;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
@@ -95,7 +94,7 @@ public class AuthorControllerTest {
 
     @Test
     public void updateExistingAuthor() {
-        Author author = new Author();
+        AuthorDTO author = new AuthorDTO();
         author.setName("updated Author");
 
         given().auth()
@@ -108,7 +107,7 @@ public class AuthorControllerTest {
 
     @Test
     public void updateNonExistingAuthor() {
-        Author author = new Author();
+        AuthorDTO author = new AuthorDTO();
         author.setName("updated Author");
 
         given().auth()

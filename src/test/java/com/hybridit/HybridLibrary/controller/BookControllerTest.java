@@ -1,7 +1,6 @@
 package com.hybridit.HybridLibrary.controller;
 
 import com.hybridit.HybridLibrary.dto.BookDTO;
-import com.hybridit.HybridLibrary.model.Book;
 import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -32,10 +31,10 @@ public class BookControllerTest {
     public void getExistingBook() {
         given().auth()
                 .basic("ivan", "ivan").
-                when().get("/api/books/{id}", 1).then().body("id", Matchers.equalTo(1)).
-                body("title", Matchers.equalTo("Flauberts Parrot"))
-                .body("isbn", Matchers.equalTo("4567-897-98")).
-                body("publisher", Matchers.equalTo("Jonathan Cape"));
+                when().get("/api/books/{id}", 1).then().body("id", Matchers.equalTo(1))
+                .body("title", Matchers.equalTo("Flauberts Parrot"))
+                .body("isbn", Matchers.equalTo("4567-897-98"))
+                .body("publisher", Matchers.equalTo("Jonathan Cape"));
     }
 
     @Test
@@ -60,7 +59,7 @@ public class BookControllerTest {
 
     @Test
     public void createBook() {
-        Book book = new Book();
+        BookDTO book = new BookDTO();
         book.setIsbn("isbn");
         book.setPublisher("publisher");
         book.setTitle("title");
@@ -68,15 +67,15 @@ public class BookControllerTest {
         given().auth()
                 .basic("ivan", "ivan")
                 .contentType("application/json")
-                .body(book).when().post("/api/books").then().
-                body("isbn", Matchers.equalTo("isbn")).
-                body("publisher", Matchers.equalTo("publisher")).body("title", Matchers.equalTo("title"));
+                .body(book).when().post("/api/books").then()
+                .body("isbn", Matchers.equalTo("isbn"))
+                .body("publisher", Matchers.equalTo("publisher")).body("title", Matchers.equalTo("title"));
     }
 
     @Test
     public void updateExistingBook() {
 
-        Book book = new Book();
+        BookDTO book = new BookDTO();
         book.setTitle("book title");
         book.setPublisher("book publisher");
         book.setIsbn("isbn");
@@ -86,14 +85,14 @@ public class BookControllerTest {
                 .contentType("application/json")
                 .body(book)
                 .when().put("/api/books/{id}", 1).then()
-                .body("title", Matchers.equalTo("book title")).
-                body("publisher", Matchers.equalTo("book publisher"))
+                .body("title", Matchers.equalTo("book title"))
+                .body("publisher", Matchers.equalTo("book publisher"))
                 .body("isbn", Matchers.equalTo("isbn"));
     }
 
     @Test
     public void updateNonExistingBook() {
-        Book book = new Book();
+        BookDTO book = new BookDTO();
         book.setTitle("book title");
         book.setPublisher("book publisher");
         book.setIsbn("isbn");

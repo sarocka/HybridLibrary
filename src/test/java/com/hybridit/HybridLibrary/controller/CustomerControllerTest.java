@@ -2,7 +2,6 @@ package com.hybridit.HybridLibrary.controller;
 
 import com.hybridit.HybridLibrary.model.Customer;
 import io.restassured.RestAssured;
-import io.restassured.authentication.FormAuthConfig;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -44,7 +42,7 @@ public class CustomerControllerTest {
     public void getNonExistingCustomer() {
         given().auth()
                 .basic("sara", "petruska").
-        when().get("/api/customers/{id}", 9).then().statusCode(404);
+                when().get("/api/customers/{id}", 9).then().statusCode(404);
     }
 
     @Test
@@ -114,7 +112,7 @@ public class CustomerControllerTest {
     public void deleteExistingCustomer() {
         given().auth()
                 .basic("sara", "petruska").
-        when().delete("/api/customers/{id}", 1).then()
+                when().delete("/api/customers/{id}", 1).then()
                 .body("id", Matchers.equalTo(1))
                 .body("firstname", Matchers.equalTo("Vladimir"))
                 .body("lastname", Matchers.equalTo("Danilovic"))
@@ -127,6 +125,6 @@ public class CustomerControllerTest {
     public void deleteNonExistingCustomer() {
         given().auth()
                 .basic("sara", "petruska").
-        when().delete("/api/customers/{id}", 9).then().statusCode(404);
+                when().delete("/api/customers/{id}", 9).then().statusCode(404);
     }
 }

@@ -1,8 +1,6 @@
 package com.hybridit.HybridLibrary.controller;
 
 import com.hybridit.HybridLibrary.dto.RoleDTO;
-import com.hybridit.HybridLibrary.model.Customer;
-import com.hybridit.HybridLibrary.model.Role;
 import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -15,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -34,7 +31,7 @@ public class RoleControllerTest {
     public void getExistingRole() {
         given().auth()
                 .basic("aron", "aron").
-        when().get("/api/roles/{id}", 1).then()
+                when().get("/api/roles/{id}", 1).then()
                 .body("id", Matchers.equalTo(1))
                 .body("name", Matchers.equalTo("LIBRARIAN"));
     }
@@ -43,7 +40,7 @@ public class RoleControllerTest {
     public void getNonExistingRole() {
         given().auth()
                 .basic("aron", "aron").
-        when().get("/api/roles/{id}", 9).then().statusCode(404);
+                when().get("/api/roles/{id}", 9).then().statusCode(404);
     }
 
     @Test
@@ -99,7 +96,7 @@ public class RoleControllerTest {
     public void deleteExistingRole() {
         given().auth()
                 .basic("aron", "aron").
-        when().delete("/api/roles/{id}", 1).then()
+                when().delete("/api/roles/{id}", 1).then()
                 .body("id", Matchers.equalTo(1))
                 .body("name", Matchers.equalTo("LIBRARIAN"));
     }
@@ -108,6 +105,6 @@ public class RoleControllerTest {
     public void deleteNonExistingRole() {
         given().auth()
                 .basic("aron", "aron").
-        when().delete("/api/roles/{id}", 9).then().statusCode(404);
+                when().delete("/api/roles/{id}", 9).then().statusCode(404);
     }
 }

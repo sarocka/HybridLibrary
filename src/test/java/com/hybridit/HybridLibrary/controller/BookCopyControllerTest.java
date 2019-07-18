@@ -122,7 +122,6 @@ public class BookCopyControllerTest {
                 .body("dateOfBorrowing", Matchers.equalTo(null))
                 .body("bookId", Matchers.equalTo(1))
                 .body("bookTitle", Matchers.equalTo("Flauberts Parrot"));
-        ;
     }
 
     @Test

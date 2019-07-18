@@ -1,6 +1,5 @@
 package com.hybridit.HybridLibrary.controller;
 
-import com.hybridit.HybridLibrary.dto.RoleDTO;
 import com.hybridit.HybridLibrary.dto.UserDTO;
 import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
@@ -75,8 +74,8 @@ public class UserControllerTest {
     public void updateExistingUser() {
         UserDTO user = new UserDTO();
         user.setId(1L);
-       user.setUsername("username");
-       user.setRoleId(1L);
+        user.setUsername("username");
+        user.setRoleId(1L);
 
         given().auth()
                 .basic("aron", "aron")

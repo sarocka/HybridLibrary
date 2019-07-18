@@ -3,6 +3,7 @@ package com.hybridit.HybridLibrary.controller;
 import com.hybridit.HybridLibrary.dto.AuthorDTO;
 import com.hybridit.HybridLibrary.model.Author;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -31,21 +31,24 @@ public class AuthorControllerTest {
 
     @Test
     public void getOneExisting() {
-
-        when().get("/api/authors/{id}", 1).then().body("id", Matchers.equalTo(1)).
+        given().auth()
+                .basic("ivan", "ivan").
+                when().get("/api/authors/{id}", 1).then().body("id", Matchers.equalTo(1)).
                 body("name", Matchers.equalTo("Julian Barnes"));
     }
 
     @Test
     public void getOneNonExisting() {
-
-        when().get("/api/authors/{id}", 5).then().statusCode(404);
+        given().auth()
+                .basic("ivan", "ivan").
+                when().get("/api/authors/{id}", 5).then().statusCode(404);
     }
 
     @Test
     public void getAll() {
 
-        List<AuthorDTO> response = when().get("/api/authors").then().statusCode(200).extract().jsonPath().getList("$", AuthorDTO.class);
+        List<AuthorDTO> response = given().auth()
+                .basic("ivan", "ivan").when().get("/api/authors").then().statusCode(200).extract().jsonPath().getList("$", AuthorDTO.class);
 
         AuthorDTO author1 = response.get(0);
         assertEquals((long) author1.getId(), 1L);
@@ -54,30 +57,40 @@ public class AuthorControllerTest {
 
     @Test
     public void createNewAuthor() {
-        Author author = new Author();
+        AuthorDTO author = new AuthorDTO();
         author.setName("new Author");
 
-        given()
-                .contentType("application/json")
-                .body(author)
-                .when().post("/api/authors").then()
-                .body("name", Matchers.equalTo(" new Author"));
+        given().auth()
+                .basic("ivan", "ivan")
+                .contentType(ContentType.JSON)
+                .with().body(author)
+                .when().post("/api/authors").then().statusCode(201)
+                .body("name", Matchers.equalTo("new Author"));
     }
 
     @Test
     public void deleteExistingAuthorWithNoBooks() {
-        when().delete("/api/authors/{id}", 3).then().body("id", Matchers.equalTo(3)).
+        given().auth()
+                .basic("ivan", "ivan").
+                when().delete("/api/authors/{id}", 3).
+                then().body("id", Matchers.equalTo(3)).
                 body("name", Matchers.equalTo("Milos Crnjanski"));
     }
 
     @Test
     public void deleteExistingAuthorWithBooks() {
-        when().delete("/api/authors/{id}", 1).then().statusCode(400);
+
+        given().auth()
+                .basic("ivan", "ivan").
+                when().delete("/api/authors/{id}", 1).then().statusCode(400);
     }
 
     @Test
     public void deleteNonExistingAuthor() {
-        when().delete("/api/authors/{id}", 19).then().statusCode(404);
+
+        given().auth()
+                .basic("ivan", "ivan").
+                when().delete("/api/authors/{id}", 19).then().statusCode(404);
     }
 
     @Test
@@ -85,10 +98,11 @@ public class AuthorControllerTest {
         Author author = new Author();
         author.setName("updated Author");
 
-        given()
+        given().auth()
+                .basic("ivan", "ivan")
                 .contentType("application/json")
                 .body(author)
-                .when().put("/api/authors/{id}", 1).then()
+                .when().put("/api/authors/{id}", 1).then().statusCode(200)
                 .body("name", Matchers.equalTo("updated Author"));
     }
 
@@ -97,7 +111,8 @@ public class AuthorControllerTest {
         Author author = new Author();
         author.setName("updated Author");
 
-        given()
+        given().auth()
+                .basic("ivan", "ivan")
                 .contentType("application/json")
                 .body(author)
                 .when().put("/api/authors/{id}", 6).then().statusCode(404);

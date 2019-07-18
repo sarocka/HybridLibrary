@@ -28,24 +28,24 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    @Secured({"MANAGER"})
+    @Secured({"ROLE_MANAGER"})
     public ResponseEntity<List<BookDTO>> getAll() {
         return new ResponseEntity<>(bookToBookDTOConverter.convert(bookService.findAll()), HttpStatus.OK);
     }
 
-    @Secured("MANAGER")
+    @Secured("ROLE_MANAGER")
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<BookDTO> getOne(@PathVariable Long id) {
         return new ResponseEntity<>(bookToBookDTOConverter.convert(bookService.findOne(id)), HttpStatus.OK);
     }
 
-    @Secured("MANAGER")
+    @Secured("ROLE_MANAGER")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<BookDTO> delete(@PathVariable Long id) {
         return new ResponseEntity<>(bookToBookDTOConverter.convert(bookService.delete(id)), HttpStatus.OK);
     }
 
-    @Secured("MANAGER")
+    @Secured("ROLE_MANAGER")
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<BookDTO> create(@RequestBody BookDTO bookDTO) {
         Book book = bookDTOToBookConverter.convert(bookDTO);
@@ -53,7 +53,7 @@ public class BookController {
         return new ResponseEntity<>(bookToBookDTOConverter.convert(book), HttpStatus.CREATED);
     }
 
-    @Secured("MANAGER")
+    @Secured("ROLE_MANAGER")
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<BookDTO> update(@RequestBody BookDTO bookDTO, @PathVariable Long id) {
         Book book = bookDTOToBookConverter.convert(bookDTO);

@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -31,8 +30,9 @@ public class BookControllerTest {
 
     @Test
     public void getExistingBook() {
-
-        when().get("/api/books/{id}", 1).then().body("id", Matchers.equalTo(1)).
+        given().auth()
+                .basic("ivan", "ivan").
+                when().get("/api/books/{id}", 1).then().body("id", Matchers.equalTo(1)).
                 body("title", Matchers.equalTo("Flauberts Parrot"))
                 .body("isbn", Matchers.equalTo("4567-897-98")).
                 body("publisher", Matchers.equalTo("Jonathan Cape"));
@@ -40,14 +40,16 @@ public class BookControllerTest {
 
     @Test
     public void getNonExistingBook() {
-
-        when().get("/api/books/{id}", 9).then().statusCode(404);
+        given().auth()
+                .basic("ivan", "ivan").
+                when().get("/api/books/{id}", 9).then().statusCode(404);
     }
 
     @Test
     public void getAll() {
 
-        List<BookDTO> response = when().get("/api/books").then().statusCode(200).extract().jsonPath().getList("$", BookDTO.class);
+        List<BookDTO> response = given().auth()
+                .basic("ivan", "ivan").when().get("/api/books").then().statusCode(200).extract().jsonPath().getList("$", BookDTO.class);
 
         BookDTO book1 = response.get(0);
         assertEquals((long) book1.getId(), 1L);
@@ -63,7 +65,8 @@ public class BookControllerTest {
         book.setPublisher("publisher");
         book.setTitle("title");
 
-        given()
+        given().auth()
+                .basic("ivan", "ivan")
                 .contentType("application/json")
                 .body(book).when().post("/api/books").then().
                 body("isbn", Matchers.equalTo("isbn")).
@@ -78,7 +81,8 @@ public class BookControllerTest {
         book.setPublisher("book publisher");
         book.setIsbn("isbn");
 
-        given()
+        given().auth()
+                .basic("ivan", "ivan")
                 .contentType("application/json")
                 .body(book)
                 .when().put("/api/books/{id}", 1).then()
@@ -94,7 +98,8 @@ public class BookControllerTest {
         book.setPublisher("book publisher");
         book.setIsbn("isbn");
 
-        given()
+        given().auth()
+                .basic("ivan", "ivan")
                 .contentType("application/json")
                 .body(book)
                 .when().put("/api/books/{id}", 6).then().statusCode(404);
@@ -102,8 +107,9 @@ public class BookControllerTest {
 
     @Test
     public void deleteExistingBook() {
-
-        when().delete("/api/books/{id}", 1).then().
+        given().auth()
+                .basic("ivan", "ivan").
+                when().delete("/api/books/{id}", 1).then().
                 body("id", Matchers.equalTo(1)).
                 body("publisher", Matchers.equalTo("Jonathan Cape")).
                 body("title", Matchers.equalTo("Flauberts Parrot")).
@@ -112,7 +118,8 @@ public class BookControllerTest {
 
     @Test
     public void deleteNonExistingBook() {
-
-        when().delete("/api/books/{id}", 9).then().statusCode(404);
+        given().auth()
+                .basic("ivan", "ivan").
+                when().delete("/api/books/{id}", 9).then().statusCode(404);
     }
 }

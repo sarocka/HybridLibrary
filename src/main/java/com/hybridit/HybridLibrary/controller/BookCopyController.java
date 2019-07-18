@@ -27,32 +27,32 @@ public class BookCopyController {
         this.bookCopyToBookCopyDTOConverter = bookCopyToBookCopyDTOConverter;
     }
 
-    @Secured({"LIBRARIAN"})
+    @Secured({"ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<BookCopyDTO>> getAll() {
         return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopyService.findAll()), HttpStatus.OK);
     }
 
-    @Secured({"LIBRARIAN"})
+    @Secured({"ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<BookCopyDTO> getOne(@PathVariable Long id) {
         return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopyService.findOne(id)), HttpStatus.OK);
     }
 
-    @Secured({"LIBRARIAN"})
+    @Secured({"ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<BookCopyDTO> delete(@PathVariable Long id) {
         return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopyService.delete(id)), HttpStatus.OK);
     }
 
-    @Secured({"LIBRARIAN"})
+    @Secured({"ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<BookCopyDTO> create(@RequestBody BookCopyDTO bookCopyDto) {
         BookCopy bookCopy = bookCopyService.save(bookCopyDTOToBookCopyConverter.convert(bookCopyDto));
         return new ResponseEntity<>(bookCopyToBookCopyDTOConverter.convert(bookCopy), HttpStatus.CREATED);
     }
 
-    @Secured({"LIBRARIAN"})
+    @Secured({"ROLE_LIBRARIAN"})
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<BookCopyDTO> update(@RequestBody BookCopyDTO bookCopyDTO, @PathVariable Long id) {
         BookCopy bookCopy = bookCopyDTOToBookCopyConverter.convert(bookCopyDTO);

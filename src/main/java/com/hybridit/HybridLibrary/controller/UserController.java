@@ -29,24 +29,24 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    @Secured({"ADMIN", "MANAGER"})
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     public ResponseEntity<List<UserDTO>> getAll() {
         return new ResponseEntity<>(userToUserDTOConverter.convert(userService.findAll()), HttpStatus.OK);
     }
 
-    @Secured({"ADMIN", "MANAGER"})
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<UserDTO> getOne(@PathVariable Long id) {
         return new ResponseEntity<>(userToUserDTOConverter.convert(userService.findOne(id)), HttpStatus.OK);
     }
 
-    @Secured({"ADMIN", "MANAGER"})
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<UserDTO> delete(@PathVariable Long id) {
         return new ResponseEntity<>(userToUserDTOConverter.convert(userService.delete(id)), HttpStatus.OK);
     }
 
-    @Secured({"ADMIN", "MANAGER"})
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
         User user = userDTOToUserConverter.convert(userDTO);
@@ -54,7 +54,7 @@ public class UserController {
         return new ResponseEntity<>(userToUserDTOConverter.convert(user), HttpStatus.CREATED);
     }
 
-    @Secured({"ADMIN", "MANAGER"})
+    @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", value = "/{id}")
     public ResponseEntity<UserDTO> update(@RequestBody UserDTO userDTO, @PathVariable Long id) {
         User user = userDTOToUserConverter.convert(userDTO);

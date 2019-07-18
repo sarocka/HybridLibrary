@@ -31,7 +31,8 @@ public class CustomerControllerTest {
 
     @Test
     public void getExistingCustomer() {
-        given().auth().preemptive().basic("aron","aron").when().get("/api/customers/{id}", 1).then().statusCode(200)
+        given().auth()
+                .basic("sara", "petruska").when().get("/api/customers/{id}", 1).then().statusCode(200)
                 .body("id", Matchers.equalTo(1))
                 .body("firstname", Matchers.equalTo("Vladimir"))
                 .body("lastname", Matchers.equalTo("Danilovic"))
@@ -41,14 +42,16 @@ public class CustomerControllerTest {
 
     @Test
     public void getNonExistingCustomer() {
-
+        given().auth()
+                .basic("sara", "petruska").
         when().get("/api/customers/{id}", 9).then().statusCode(404);
     }
 
     @Test
     public void getAll() {
 
-        List<Customer> response = when().get("/api/customers").then().statusCode(200).extract().jsonPath().getList("$", Customer.class);
+        List<Customer> response = given().auth()
+                .basic("sara", "petruska").when().get("/api/customers").then().statusCode(200).extract().jsonPath().getList("$", Customer.class);
 
         Customer customer = response.get(0);
         assertEquals((long) customer.getId(), 1L);
@@ -67,7 +70,8 @@ public class CustomerControllerTest {
         customer.setAddress("Address");
         customer.setPhoneNo("PhoneNo");
 
-        given()
+        given().auth()
+                .basic("sara", "petruska")
                 .contentType("application/json")
                 .body(customer).when().post("/api/customers").then()
                 .body("firstname", Matchers.equalTo("Firstname"))
@@ -84,7 +88,8 @@ public class CustomerControllerTest {
         customer.setAddress("Address");
         customer.setPhoneNo("PhoneNo");
 
-        given()
+        given().auth()
+                .basic("sara", "petruska")
                 .contentType("application/json")
                 .body(customer)
                 .when().put("/api/customers/{id}", 1).then()
@@ -98,7 +103,8 @@ public class CustomerControllerTest {
     public void updateNonExistingCustomer() {
         Customer customer = new Customer();
 
-        given()
+        given().auth()
+                .basic("sara", "petruska")
                 .contentType("application/json")
                 .body(customer)
                 .when().put("/api/customers/{id}", 6).then().statusCode(404);
@@ -106,7 +112,8 @@ public class CustomerControllerTest {
 
     @Test
     public void deleteExistingCustomer() {
-
+        given().auth()
+                .basic("sara", "petruska").
         when().delete("/api/customers/{id}", 1).then()
                 .body("id", Matchers.equalTo(1))
                 .body("firstname", Matchers.equalTo("Vladimir"))
@@ -118,7 +125,8 @@ public class CustomerControllerTest {
 
     @Test
     public void deleteNonExistingCustomer() {
-
+        given().auth()
+                .basic("sara", "petruska").
         when().delete("/api/customers/{id}", 9).then().statusCode(404);
     }
 }

@@ -34,7 +34,6 @@ public class LibraryAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("User not found");
         } else if(!user.getPassword().equals(password)) {
             throw new BadCredentialsException("Bad credentials");
-
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>();

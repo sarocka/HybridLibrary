@@ -32,7 +32,8 @@ public class RoleControllerTest {
 
     @Test
     public void getExistingRole() {
-
+        given().auth()
+                .basic("aron", "aron").
         when().get("/api/roles/{id}", 1).then()
                 .body("id", Matchers.equalTo(1))
                 .body("name", Matchers.equalTo("LIBRARIAN"));
@@ -40,14 +41,16 @@ public class RoleControllerTest {
 
     @Test
     public void getNonExistingRole() {
-
+        given().auth()
+                .basic("aron", "aron").
         when().get("/api/roles/{id}", 9).then().statusCode(404);
     }
 
     @Test
     public void getAll() {
 
-        List<RoleDTO> response = when().get("/api/roles").then().statusCode(200).extract().jsonPath().getList("$", RoleDTO.class);
+        List<RoleDTO> response = given().auth()
+                .basic("aron", "aron").when().get("/api/roles").then().statusCode(200).extract().jsonPath().getList("$", RoleDTO.class);
 
         RoleDTO role = response.get(0);
         assertEquals((long) role.getId(), 1L);
@@ -60,7 +63,8 @@ public class RoleControllerTest {
         role.setName("TEST");
 
 
-        given()
+        given().auth()
+                .basic("aron", "aron")
                 .contentType("application/json")
                 .body(role).when().post("/api/roles").then()
                 .body("name", Matchers.equalTo("TEST"));
@@ -72,7 +76,8 @@ public class RoleControllerTest {
         role.setId(1L);
         role.setName("UPDATED ROLE");
 
-        given()
+        given().auth()
+                .basic("aron", "aron")
                 .contentType("application/json")
                 .body(role)
                 .when().put("/api/roles/{id}", 1).then()
@@ -83,7 +88,8 @@ public class RoleControllerTest {
     public void updateNonExistingRole() {
         RoleDTO role = new RoleDTO();
 
-        given()
+        given().auth()
+                .basic("aron", "aron")
                 .contentType("application/json")
                 .body(role)
                 .when().put("/api/roles/{id}", 6).then().statusCode(404);
@@ -91,7 +97,8 @@ public class RoleControllerTest {
 
     @Test
     public void deleteExistingRole() {
-
+        given().auth()
+                .basic("aron", "aron").
         when().delete("/api/roles/{id}", 1).then()
                 .body("id", Matchers.equalTo(1))
                 .body("name", Matchers.equalTo("LIBRARIAN"));
@@ -99,7 +106,8 @@ public class RoleControllerTest {
 
     @Test
     public void deleteNonExistingRole() {
-
+        given().auth()
+                .basic("aron", "aron").
         when().delete("/api/roles/{id}", 9).then().statusCode(404);
     }
 }

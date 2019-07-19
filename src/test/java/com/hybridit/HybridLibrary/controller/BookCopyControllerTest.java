@@ -136,6 +136,4 @@ public class BookCopyControllerTest {
                 .body(bookCopyDTO)
                 .when().put("/api/copies/{id}", 6).then().statusCode(404);
     }
-
-
 }

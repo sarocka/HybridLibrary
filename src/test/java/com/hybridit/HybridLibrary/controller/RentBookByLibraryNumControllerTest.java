@@ -26,7 +26,7 @@ public class RentBookByLibraryNumControllerTest {
     }
 
     @Test
-    public void rentByLibraryNumCopyAvailableCustomerExisting() {
+    public void rentByLibraryNumCopyCustomerExisting() {
 
         given().auth()
                 .basic("sara", "petruska").when().get("/api/rentByLibraryNum?libraryNum=4567-0987-ab&membershipNo=123456")

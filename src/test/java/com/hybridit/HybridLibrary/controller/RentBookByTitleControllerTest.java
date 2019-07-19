@@ -53,6 +53,14 @@ public class RentBookByTitleControllerTest {
                 .then().statusCode(404);
     }
 
+    @Test
+    public void rentByNonExistingBookTitle() {
+
+        given().auth()
+                .basic("sara", "petruska").when().get("/api/rentByTitle?title=Sometitle&membershipNo=23456")
+                .then().statusCode(404);
+    }
+
 }
 
 

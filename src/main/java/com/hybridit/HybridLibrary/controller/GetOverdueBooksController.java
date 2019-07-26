@@ -25,7 +25,7 @@ public class GetOverdueBooksController {
         this.bookCopyToBookCopyDTOConverter = bookCopyToBookCopyDTOConverter;
     }
 
-    @Secured({"LIBRARIAN", "MANAGER"})
+    @Secured({"ROLE_LIBRARIAN", "ROLE_MANAGER"})
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<List<BookCopyDTO>> getOverdueBooks() {
         List<BookCopy> overdueBooks = bookCopyService.getOverdueCopies();

@@ -24,7 +24,7 @@ public class RentBookByLibraryNumController {
         this.bookCopyToBookCopyDTOConverter = bookCopyToBookCopyDTOConverter;
     }
 
-    @Secured({"LIBRARIAN", "MANAGER"})
+    @Secured({"ROLE_LIBRARIAN", "ROLE_MANAGER"})
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<BookCopyDTO> rentByLibraryNum(@RequestParam String libraryNum, @RequestParam String membershipNo) {
         BookCopy rented = bookCopyService.rentByLibraryNum(libraryNum, membershipNo);

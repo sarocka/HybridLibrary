@@ -24,7 +24,7 @@ public class ReturnBookController {
         this.bookCopyToBookCopyDTOConverter = bookCopyToBookCopyDTOConverter;
     }
 
-    @Secured({"LIBRARIAN", "MANAGER"})
+    @Secured({"ROLE_LIBRARIAN", "ROLE_MANAGER"})
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<BookCopyDTO> returnCopy(@RequestParam String libraryNum) {
         BookCopy returned = bookCopyService.returnCopy(libraryNum);

@@ -17,7 +17,7 @@ Spring Boot, Spring Security, JPA, JUnit, RestAssurred, Maven
  3. rent by book title or rent by library number feature
  4. return book feature
  5. get overdue book feature (rent period configured to 20 days)
- 6. Admins are able to manage users and its roles; Manager manages books, authors and customers, while librarian can rent or return book copies and add/ delete/ update customers
+ 6. There are 3 available roles - admin, manager and librarian. Admins are able to manage users and its roles; Manager manages books, authors and customers, while librarian manages book copies, performs rent / return action on them and can add/ delete/ update customers
  
  
  
